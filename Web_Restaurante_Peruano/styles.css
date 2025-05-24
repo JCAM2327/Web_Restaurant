@@ -1,0 +1,678 @@
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    margin: 0;
+    background: #fff8f0;
+    color: #333;
+}
+header {
+    background: #b71c1c;
+    color: #fff;
+    padding: 1em 0;
+    text-align: center;
+}
+nav a {
+    color: #fff;
+    margin: 0 1em;
+    text-decoration: none;
+    font-weight: bold;
+}
+.pedido-btn {
+    background: #ffd600;
+    color: #b71c1c;
+    border: none;
+    padding: 0.5em 1em;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+}
+#carrusel {
+    margin: 2em auto;
+    max-width: 700px;
+}
+.carousel-container {
+    position: relative;
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+    border-radius: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin: 0 auto;
+    max-width: 700px;
+}
+.carousel-track {
+    display: flex;
+    height: 100%;
+    transition: transform 0.5s;
+}
+.carousel-img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    display: block;
+    flex: 0 0 50%;
+    max-width: 50%;
+}
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(183,28,28,0.7);
+    color: #fff;
+    border: none;
+    font-size: 2em;
+    padding: 0 0.5em;
+    cursor: pointer;
+    border-radius: 50%;
+    z-index: 2;
+}
+.carousel-btn.prev { left: 10px; }
+.carousel-btn.next { right: 10px; }
+
+.promo-banner {
+    background: #ffd600;
+    color: #b71c1c;
+    text-align: center;
+    padding: 1em;
+    margin: 1em auto;
+    border-radius: 10px;
+    font-size: 1.2em;
+    position: relative;
+}
+#vale-descuento-btn {
+    margin-left: 1em;
+    background: #b71c1c;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 0.5em 1em;
+    cursor: pointer;
+}
+
+#platos {
+    max-width: 1000px;
+    margin: 2em auto;
+    padding: 0 1em;
+}
+.platos-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2em;
+    justify-content: center;
+}
+.plato-card {
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    width: 250px;
+    text-align: center;
+    padding: 1em;
+    transition: transform 0.2s;
+}
+.plato-card:hover {
+    transform: scale(1.04);
+}
+.plato-card img {
+    width: 100%;
+    border-radius: 10px;
+    height: 150px;
+    object-fit: cover;
+}
+.precio {
+    display: block;
+    margin: 0.5em 0;
+    font-weight: bold;
+    color: #b71c1c;
+}
+
+#contacto {
+    background: #fbe9e7;
+    padding: 2em 0;
+    text-align: center;
+}
+#contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    max-width: 400px;
+    margin: 0 auto;
+}
+#contact-form input, #contact-form textarea {
+    padding: 0.7em;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+}
+#contact-form button {
+    background: #b71c1c;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.7em;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+footer {
+    background: #b71c1c;
+    color: #fff;
+    text-align: center;
+    padding: 1em 0;
+    margin-top: 2em;
+}
+.redes a {
+    color: #ffd600;
+    margin: 0 0.5em;
+    text-decoration: none;
+}
+.bandera {
+    height: 48px;
+    width: auto;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+    object-fit: cover;
+}
+
+.navbar {
+    display: flex;
+    justify-content: center;
+    gap: 2em;
+    background: #fff3e0;
+    padding: 0.7em 0;
+    border-radius: 0 0 18px 18px;
+    box-shadow: 0 2px 8px rgba(183,28,28,0.08);
+    margin-bottom: 0.5em;
+}
+.navbar a {
+    color: #b71c1c;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 1.1em;
+    padding: 0.3em 1em;
+    border-radius: 8px;
+    transition: background 0.2s, color 0.2s;
+}
+.navbar a:hover, .navbar .pedido-btn:hover {
+    background: #ffd600;
+    color: #b71c1c;
+}
+body.modo-nocturno {
+    background: #232323;
+    color: #eee;
+}
+body.modo-nocturno header,
+body.modo-nocturno .promo-banner,
+body.modo-nocturno #chef-sugerencia,
+body.modo-nocturno #mapa-peru,
+body.modo-nocturno .plato-card,
+body.modo-nocturno #contacto,
+body.modo-nocturno footer {
+    background: #2d2d2d !important;
+    color: #ffd600 !important;
+}
+body.modo-nocturno .navbar,
+body.modo-nocturno .aviso-viandas {
+    background: #333 !important;
+    color: #ffd600 !important;
+}
+body.modo-nocturno .pedido-btn,
+body.modo-nocturno #vale-descuento-btn,
+body.modo-nocturno #girar-rueda,
+body.modo-nocturno #test-plato-btn {
+    background: #ffd600 !important;
+    color: #b71c1c !important;
+}
+body.modo-nocturno .carousel-btn {
+    background: #ffd600 !important;
+    color: #b71c1c !important;
+}
+body.modo-nocturno .plato-card {
+    background: #232323 !important;
+    color: #fff !important;
+    box-shadow: 0 2px 8px rgba(255,255,255,0.08);
+}
+body.modo-nocturno .plato-card img {
+    border: 2px solid #ffd600;
+}
+body.modo-nocturno .bandera {
+    border: 2px solid #ffd600;
+}
+body.modo-nocturno .footer-aviso {
+    color: #ffd600 !important;
+}
+body.modo-nocturno input,
+body.modo-nocturno textarea,
+body.modo-nocturno select {
+    background: #232323 !important;
+    color: #fff !important;
+    border: 1px solid #ffd600 !important;
+}
+body.modo-nocturno #tooltip-mapa {
+    background: #232323 !important;
+    color: #fff !important;
+    border: 1px solid #ffd600;
+}
+body.modo-nocturno #desc-region {
+    color: #ffd600 !important;
+}
+body.modo-nocturno .faq-item p {
+    color: #eee !important;
+}
+body.modo-nocturno .desc-mapa-peru {
+    color: #eee !important;
+}
+body.modo-nocturno .header-top h1 {
+    color: #ffd600 !important;
+}
+/* Cambia los textos rojos a blanco en modo nocturno */
+body.modo-nocturno,
+body.modo-nocturno h1,
+body.modo-nocturno h2,
+body.modo-nocturno h3,
+body.modo-nocturno strong,
+body.modo-nocturno .navbar a,
+body.modo-nocturno .bandera,
+body.modo-nocturno .precio,
+body.modo-nocturno .promo-banner,
+body.modo-nocturno #chef-sugerencia,
+body.modo-nocturno #cuenta-regresiva,
+body.modo-nocturno #form-error,
+body.modo-nocturno #tooltip-mapa,
+body.modo-nocturno .faq-item strong {
+    color: #fff !important;
+}
+.logo-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0.5em;
+}
+.logo-container img {
+    height: 60px;
+    width: auto;
+    max-width: 90vw;
+}
+.fade-in {
+    animation: fadeIn 1s;
+}
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+.pedido-ok {
+    box-shadow: 0 0 0 4px #ffd600, 0 2px 8px rgba(0,0,0,0.08);
+    transition: box-shadow 0.3s;
+}
+
+/* 1. Carrito de pedidos (estilos básicos para modal y lista) */
+/* #carrito-modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.5);
+    z-index: 3000;
+    justify-content: center;
+    align-items: center;
+}
+#carrito-modal .carrito-content {
+    background: #fff3e0;
+    border-radius: 18px;
+    max-width: 400px;
+    width: 95vw;
+    padding: 2em 1em;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+    color: #b71c1c;
+}
+body.modo-nocturno #carrito-modal .carrito-content {
+    background: #232323;
+    color: #fff;
+}
+#carrito-lista {
+    margin: 1em 0;
+    padding: 0;
+    list-style: none;
+}
+#carrito-lista li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5em;
+}
+#carrito-total {
+    font-weight: bold;
+    margin-top: 1em;
+    color: #b71c1c;
+}
+body.modo-nocturno #carrito-total {
+    color: #fff;
+}
+#carrito-modal button {
+    margin-top: 1em;
+    background: #b71c1c;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 0.6em 1.5em;
+    cursor: pointer;
+}
+#carrito-modal .vaciar-btn {
+    background: #ffd600;
+    color: #b71c1c;
+    margin-left: 1em;
+}
+
+/* 2. Notificaciones push (estilo para botón de activar) */
+#push-btn {
+    background: #ffd600;
+    color: #b71c1c;
+    border: none;
+    border-radius: 10px;
+    padding: 0.5em 1.2em;
+    cursor: pointer;
+    font-weight: bold;
+    margin: 1em auto;
+    display: block;
+}
+body.modo-nocturno #push-btn {
+    background: #fff;
+    color: #b71c1c;
+}
+
+/* 6. Valoraciones y comentarios */
+.valoraciones {
+    margin: 1em 0;
+    padding: 1em;
+    background: #fff3e0;
+    border-radius: 12px;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+body.modo-nocturno .valoraciones {
+    background: #232323;
+    color: #fff;
+}
+.valoraciones label {
+    font-weight: bold;
+    margin-right: 0.5em;
+}
+.valoraciones select, .valoraciones textarea {
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    padding: 0.4em;
+    margin-bottom: 0.5em;
+    width: 100%;
+}
+.valoraciones button {
+    background: #b71c1c;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5em 1em;
+    cursor: pointer;
+    font-weight: bold;
+}
+.valoraciones .comentario {
+    margin-top: 0.5em;
+    font-size: 0.98em;
+    border-top: 1px solid #ffd600;
+    padding-top: 0.5em;
+}
+
+/* 7. Filtro de platos */
+#filtro-platos {
+    display: flex;
+    gap: 1em;
+    justify-content: center;
+    margin-bottom: 1em;
+    flex-wrap: wrap;
+}
+#filtro-platos select, #filtro-platos input {
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    padding: 0.4em;
+    font-size: 1em;
+}
+body.modo-nocturno #filtro-platos select, 
+body.modo-nocturno #filtro-platos input {
+    background: #232323;
+    color: #fff;
+    border: 1px solid #ffd600;
+}
+
+/* 8. Accesibilidad: foco visible */
+:focus {
+    outline: 2px solid #ffd600;
+    outline-offset: 2px;
+}
+
+/* 10. Animaciones suaves para modales y feedback */
+@keyframes modalFadeIn {
+    from { opacity: 0; transform: scale(0.95);}
+    to { opacity: 1; transform: scale(1);}
+}
+#carrito-modal .carrito-content,
+#faq-modal > div,
+#rueda-modal > div,
+#test-modal > div {
+    animation: modalFadeIn 0.4s;
+}
+
+/* 11. Preguntas frecuentes dinámicas (búsqueda) */
+#faq-search {
+    width: 90%;
+    margin: 0.5em auto 1em auto;
+    padding: 0.5em;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+    display: block;
+}
+body.modo-nocturno #faq-search {
+    background: #232323;
+    color: #fff;
+    border: 1px solid #ffd600;
+}
+
+/* 12. Soporte para cupones */
+#cupon-section {
+    margin: 1em auto;
+    text-align: center;
+}
+#cupon-section input {
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    padding: 0.4em;
+    font-size: 1em;
+    margin-right: 0.5em;
+}
+#cupon-section button {
+    background: #b71c1c;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5em 1em;
+    cursor: pointer;
+    font-weight: bold;
+}
+body.modo-nocturno #cupon-section input {
+    background: #232323;
+    color: #fff;
+    border: 1px solid #ffd600;
+}
+body.modo-nocturno #cupon-section button {
+    background: #ffd600;
+    color: #b71c1c;
+}
+
+/* 14. Chat de soporte */
+#chat-soporte {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 3000;
+    background: #fff3e0;
+    border-radius: 18px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+    width: 320px;
+    max-width: 95vw;
+    display: none;
+    flex-direction: column;
+}
+body.modo-nocturno #chat-soporte {
+    background: #232323;
+    color: #fff;
+}
+#chat-header {
+    background: #b71c1c;
+    color: #fff;
+    padding: 0.7em;
+    border-radius: 18px 18px 0 0;
+    font-weight: bold;
+    text-align: center;
+}
+#chat-mensajes {
+    flex: 1;
+    padding: 1em;
+    overflow-y: auto;
+    max-height: 200px;
+    font-size: 0.98em;
+}
+#chat-input-area {
+    display: flex;
+    border-top: 1px solid #ffd600;
+}
+#chat-input {
+    flex: 1;
+    border: none;
+    border-radius: 0 0 0 18px;
+    padding: 0.7em;
+    font-size: 1em;
+}
+#chat-enviar {
+    background: #ffd600;
+    color: #b71c1c;
+    border: none;
+    border-radius: 0 0 18px 0;
+    padding: 0.7em 1em;
+    cursor: pointer;
+    font-weight: bold;
+}
+#chat-toggle-btn {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 3100;
+    background: #ffd600;
+    color: #b71c1c;
+    border: none;
+    border-radius: 50%;
+    width: 54px;
+    height: 54px;
+    font-size: 2em;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    cursor: pointer;
+}
+body.modo-nocturno #chat-header {
+    background: #ffd600;
+    color: #b71c1c;
+}
+body.modo_nocturno #chat-enviar,
+body.modo_nocturno #chat-toggle-btn {
+    background: #fff;
+    color: #b71c1c;
+}
+
+/* 15. Modo offline (aviso) */
+#offline-aviso {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    background: #b71c1c;
+    color: #fff;
+    text-align: center;
+    padding: 0.7em 0;
+    z-index: 4000;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+body.modo-nocturno #offline-aviso {
+    background: #ffd600;
+    color: #b71c1c;
+}
+@media (max-width: 900px) {
+    .carousel-container.full-width {
+        max-height: 180px !important;
+    }
+    .header-top img.bandera {
+        height: 32px !important;
+    }
+    .logo-container img {
+        height: 40px;
+    }
+    .plato-card {
+        width: 90vw;
+        min-width: 180px;
+    }
+}
+@media (max-width: 700px) {
+    .carousel-container, .carousel-img, .carousel-img.active {
+        height: 100px !important;
+        min-height: 80px !important;
+    }
+    .carousel-img {
+        max-width: 50%;
+        height: 100px !important;
+    }
+    .header-top h1 {
+        font-size: 1.2em !important;
+    }
+    .logo-container img {
+        height: 32px;
+    }
+    .contact-logos img {
+        height: 26px !important;
+        width: 26px !important;
+    }
+    #pedido-express, #pedido-express-aviso {
+        right: 5vw !important;
+        left: auto !important;
+        font-size: 0.95em !important;
+        padding: 0.5em 0.8em !important;
+    }
+    .plato-card {
+        width: 98vw;
+        min-width: 120px;
+    }
+}
+@media (max-width: 500px) {
+    .carousel-container.full-width {
+        max-height: 90px !important;
+    }
+    .header-top img.bandera {
+        height: 20px !important;
+    }
+    .logo-container img {
+        height: 20px;
+    }
+    .plato-card {
+        width: 99vw;
+        min-width: 90px;
+    }
+}
+
+/* Modo nocturno: corrige textos de la ruleta y modales */
+body.modo-nocturno #rueda-modal-content,
+body.modo-nocturno #rueda-modal-content h2,
+body.modo-nocturno #rueda-modal-content p,
+body.modo-nocturno #rueda-modal-content #resultado-rueda {
+    background: #232323 !important;
+    color: #fff !important;
+}
+body.modo-nocturno #rueda-modal-content button {
+    background: #ffd600 !important;
+    color: #b71c1c !important;
+}
+body.modo-nocturno #rueda-modal-content #resultado-rueda {
+    color: #ffd600 !important;
+}

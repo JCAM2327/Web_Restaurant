@@ -1,0 +1,230 @@
+/* Estilos para modales, fab, carrito, chat, preguntas frecuentes, etc. */
+
+.fab-btn {
+    position: fixed;
+    z-index: 1100;
+    background: #ffd600;
+    color: #b71c1c;
+    border: none;
+    border-radius: 50%;
+    width: 54px;
+    height: 54px;
+    font-size: 2em;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    cursor: pointer;
+}
+.carrito-fab { bottom: 170px; right: 20px; }
+.push-fab { bottom: 230px; right: 20px; }
+.chat-fab { bottom: 20px; left: 20px; }
+
+.modal-bg {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.5);
+    z-index: 3000;
+    justify-content: center;
+    align-items: center;
+}
+.modal-content {
+    background: #fff3e0;
+    border-radius: 18px;
+    max-width: 400px;
+    width: 95vw;
+    padding: 2em 1em;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+    color: #b71c1c;
+}
+body.modo-nocturno .modal-content {
+    background: #232323;
+    color: #fff;
+}
+#offline-aviso {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    background: #b71c1c;
+    color: #fff;
+    text-align: center;
+    padding: 0.7em 0;
+    z-index: 4000;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+body.modo-nocturno #offline-aviso {
+    background: #ffd600;
+    color: #b71c1c;
+}
+
+/* Icon buttons (campanita, carrito, whatsapp) fijos arriba derecha */
+.icon-btn {
+    position: absolute !important;
+    z-index: 12;
+    background: #ffd600;
+    color: #b71c1c;
+    border: none;
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    font-size: 1.3em;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.2s;
+}
+.icon-btn:hover,
+.icon-btn:focus {
+    background: #ffe066;
+}
+.icon-btn .icon-tooltip {
+    display: none;
+    position: absolute;
+    top: 46px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #232323;
+    color: #fff;
+    padding: 0.3em 0.8em;
+    border-radius: 8px;
+    font-size: 0.98em;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    z-index: 20;
+    pointer-events: none;
+}
+.icon-btn:hover .icon-tooltip,
+.icon-btn:focus .icon-tooltip {
+    display: block;
+}
+.icon-btn img {
+    display: block;
+    margin: 0 auto;
+    pointer-events: none;
+    background: transparent;
+}
+
+/* Agrupa los iconos en la esquina inferior izquierda */
+.fixed-bottom-left {
+    position: fixed;
+    left: 20px;
+    bottom: 20px;
+    z-index: 1200;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+.fixed-bottom-left .icon-btn {
+    position: static !important;
+    margin: 0;
+}
+
+/* Contacto y comentarios lado a lado */
+#contacto-comentarios {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 0.5em;
+    flex-wrap: wrap;
+    margin-bottom: 2em;
+}
+#contacto, .valoraciones {
+    flex: 1 1 320px;
+    max-width: 400px;
+    min-width: 260px;
+    margin: 0 auto;
+    background: #fff3e0;
+    border-radius: 14px;
+    padding: 1.2em 1em;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+#contacto h2, .valoraciones label {
+    color: #b71c1c;
+}
+.valoraciones button, #contact-form button {
+    background: #b71c1c;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.7em 1em;
+    cursor: pointer;
+    font-weight: bold;
+}
+.valoraciones select, .valoraciones textarea, #contact-form input, #contact-form textarea {
+    margin-bottom: 0.7em;
+}
+@media (max-width: 900px) {
+    #contacto-comentarios {
+        flex-direction: column;
+        gap: 1em;
+        align-items: center;
+    }
+    #contacto, .valoraciones {
+        max-width: 98vw;
+    }
+}
+
+/* Carrito contador */
+#carrito-toggle-btn {
+    position: absolute !important;
+    left: 60px !important;
+    top: 10px !important;
+}
+#carrito-count {
+    font-size: 1em;
+    min-width: 22px;
+    min-height: 22px;
+    padding: 0 4px;
+    background: #b71c1c;
+    color: #fff;
+    border-radius: 50%;
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    pointer-events: none;
+}
+
+/* Elimina la campanita y su tooltip si existe */
+#push-btn, .push-fab {
+    display: none !important;
+}
+
+/* Carrito y modo nocturno: mismo tamaño y alineación visual */
+#carrito-toggle-btn, #modo-nocturno-btn {
+    width: 38px !important;
+    height: 38px !important;
+    font-size: 1.3em !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    padding: 0 !important;
+}
+
+/* Título restaurante llamativo, fondo más sutil */
+.titulo-restaurante {
+    font-family: 'Pacifico', cursive, 'Montserrat', sans-serif;
+    font-size: 2.7em !important;
+    color: #b71c1c;
+    text-shadow: 2px 2px 0 #ffd600, 4px 4px 12px #b71c1c44;
+    letter-spacing: 2.5px;
+    margin: 0 0.5em;
+    background: #fffbe7;
+    border-radius: 12px;
+    padding: 0.1em 0.5em;
+    display: inline-block;
+    transition: color 0.2s, text-shadow 0.2s, background 0.2s;
+    /* Fondo más claro y menos saturado */
+}
+.titulo-restaurante:hover {
+    color: #ff9800;
+    text-shadow: 2px 2px 0 #fffde7, 0 0 16px #ff980088;
+    background: #fff8e1;
+}
+
+/* ...mueve aquí el resto de los estilos de componentes que estaban en styles.css... */
