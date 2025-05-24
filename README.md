@@ -4,7 +4,7 @@
 
 ## Descripción
 
-Este proyecto está diseñado para ofrecer una experiencia de usuario atractiva y eficiente, tanto en computadoras como en dispositivos móviles. El objetivo es facilitar el proceso de pedido online de viandas peruanas, mostrar la riqueza gastronómica del Perú y fortalecer la fidelización de los clientes mediante sellos y promociones.
+Este proyecto está diseñado para ofrecer una experiencia de usuario atractiva y eficiente, tanto en computadoras como en dispositivos móviles. El objetivo es facilitar el proceso de pedido online de viandas peruanas, mostrar la riqueza gastronómica del Perú y fortalecer la fidelización de los clientes mediante sellos y promociones. App en proceso de desarrollo y mejoras.
 
 ## Características principales
 
