@@ -31,7 +31,10 @@
             <div class="carousel-track" id="carousel-track" style="display:flex;transition:transform 0.5s;">
                 <img src="img/carrusel1.jpg" class="carousel-img fade-in" alt="Ceviche peruano fresco" loading="lazy" style="flex:0 0 50%;max-width:50%;">
                 <img src="img/carrusel2.jpg" class="carousel-img fade-in" alt="Lomo Saltado tradicional" loading="lazy" style="flex:0 0 50%;max-width:50%;">
-                <img src="img/carrusel3.jpgnga el cursor" class="carousel-img fade-in" alt="Paisaje del norte de Perú" loading="lazy" style="flex:0 0 50%;max-width:50%;">
+                <img src="img/carrusel3.jpg" class="carousel-img fade-in" alt="Causa Limeña" loading="lazy" style="flex:0 0 50%;max-width:50%;">
+                <img src="img/carrusel4.jpg" class="carousel-img fade-in" alt="Anticuchos" loading="lazy" style="flex:0 0 50%;max-width:50%;">
+                <img src="img/carrusel5.jpeg" class="carousel-img fade-in" alt="Papa a la Huancaína" loading="lazy" style="flex:0 0 50%;max-width:50%;">
+                <img src="img/carrusel6.jpg" class="carousel-img fade-in" alt="Suspiro Limeño" loading="lazy" style="flex:0 0 50%;max-width:50%;">
                 <!-- ...puedes añadir más imágenes de comidas o paisajes... -->
             </div>
             <button class="carousel-btn prev" aria-label="Anterior" id="carousel-prev">&#10094;</button>
@@ -57,11 +60,7 @@
             🛒
             <span id="carrito-count" style="position:absolute;top:-8px;right:-8px;background:#b71c1c;color:#fff;font-size:0.85em;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;">0</span>
         </button>
-        <!-- Soporte directo: WhatsApp y chat -->
-        <!-- <a href="https://wa.me/542235023826?text=Hola%20necesito%20ayuda%20con%20mi%20pedido%20en%20Sabor%20del%20Norte" target="_blank" title="Soporte por WhatsApp" class="icon-btn" id="whatsapp-support-btn" style="top:10px;right:110px;">
-            <img src="img/whatsapp.jpeg" alt="Soporte WhatsApp" style="height:38px;width:38px;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,0.10);border:2px solid #25d366;">
-            <span class="icon-tooltip">Soporte WhatsApp</span>
-        </a> -->
+      
     </header>
 
     <!-- Sugerencia del Chef -->
@@ -84,6 +83,21 @@
         <div style="position:relative;display:inline-block;">
             <img src="img/mapa-peru.avif" alt="Mapa de Perú con regiones" style="max-width:320px;width:100%;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);" id="mapa-peru-img">
             <div id="tooltip-mapa" style="display:none;position:absolute;top:10px;left:10px;background:#fff3e0;color:#b71c1c;padding:0.5em 1em;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.10);font-size:0.95em;z-index:10;"></div>
+            <!-- Leyenda de colores sobre la imagen -->
+            <div style="position:absolute;bottom:10px;left:10px;z-index:11;display:flex;gap:10px;">
+                <div style="display:flex;align-items:center;gap:4px;">
+                    <span style="display:inline-block;width:18px;height:18px;background:#ff9800;border-radius:4px;border:1px solid #b71c1c;"></span>
+                    <span style="font-size:0.98em;background:#fff3e0;border-radius:6px;padding:2px 7px;color:#b71c1c;">Costa</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:4px;">
+                    <span style="display:inline-block;width:18px;height:18px;background:#ffd600;border-radius:4px;border:1px solid #b71c1c;"></span>
+                    <span style="font-size:0.98em;background:#fff3e0;border-radius:6px;padding:2px 7px;color:#b71c1c;">Sierra</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:4px;">
+                    <span style="display:inline-block;width:18px;height:18px;background:#d32f2f;border-radius:4px;border:1px solid #b71c1c;"></span>
+                    <span style="font-size:0.98em;background:#fff3e0;border-radius:6px;padding:2px 7px;color:#b71c1c;">Selva</span>
+                </div>
+            </div>
         </div>
         <div id="desc-region" class="desc-region" style="margin:1em auto 0 auto;max-width:400px;font-size:1.05em;color:#b71c1c;min-height:48px;text-align:center;transition:color 0.3s;">
             Pasa el mouse sobre el mapa para descubrir la región de cada plato.
