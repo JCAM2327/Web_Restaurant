@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="claro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Política de privacidad | Sabor del Norte</title>
+    <meta name="description" content="Cómo trata Sabor del Norte los datos del carrito, el formulario de contacto y los pedidos por WhatsApp.">
+    <meta name="theme-color" content="#b71c1c">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://web-restaurant-kj1e.vercel.app/privacidad.html">
+
+    <link rel="icon" href="img/logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="img/logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800&family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        try {
+            if (localStorage.getItem('sabor-tema') === 'oscuro') {
+                document.documentElement.dataset.theme = 'oscuro';
+                document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#211a16');
+            }
+        } catch (error) {
+            /* Sin acceso a localStorage: se usa el tema claro. */
+        }
+    </script>
+</head>
+<body>
+    <a class="skip-link" href="#contenido">Saltar al contenido principal</a>
+
+    <header class="site-header">
+        <div class="contenedor header-inner">
+            <a class="marca" href="index.html" aria-label="Sabor del Norte, ir al inicio">
+                <img src="img/logo.png" alt="" width="48" height="48" class="marca-logo">
+                <span>Sabor del Norte</span>
+            </a>
+
+            <nav aria-label="Navegación principal">
+                <ul class="nav-list">
+                    <li><a href="index.html#platos">Platos</a></li>
+                    <li><a href="index.html#delivery">Delivery</a></li>
+                    <li><a href="index.html#preguntas">Preguntas</a></li>
+                    <li><a href="index.html#contacto">Contacto</a></li>
+                </ul>
+            </nav>
+
+            <div class="acciones">
+                <button id="tema-btn" class="icono-btn" type="button" aria-label="Activar modo oscuro" aria-pressed="false">🌙</button>
+            </div>
+        </div>
+    </header>
+
+    <main id="contenido" class="seccion contenedor pagina-legal">
+        <p class="eyebrow">Información legal</p>
+        <h1>Política de privacidad</h1>
+        <p class="nota">Última actualización: 5 de noviembre de 2026.</p>
+
+        <div class="panel">
+            <p>En Sabor del Norte respetamos tu privacidad. Esta política explica qué datos se usan cuando visitás el sitio, hacés una consulta o armás un pedido.</p>
+
+            <h2>Qué datos se usan</h2>
+            <ul>
+                <li><strong>Carrito y tema:</strong> se guardan en el almacenamiento local de tu navegador. No se envían a un servidor y podés borrarlos limpiando los datos del sitio.</li>
+                <li><strong>Formulario de contacto:</strong> incluye nombre, correo y mensaje. Al enviar, el sitio abre WhatsApp con esos datos; no los guarda en sus propios servidores.</li>
+                <li><strong>Pedidos:</strong> los platos, cantidades y total se incluyen en el mensaje de WhatsApp para coordinar preparación, entrega y pago.</li>
+                <li><strong>Datos técnicos:</strong> el hosting en Vercel y las tipografías de Google Fonts pueden registrar datos técnicos como dirección IP, navegador, fecha y página solicitada para funcionamiento y seguridad.</li>
+            </ul>
+
+            <h2>Para qué se usan</h2>
+            <p>Para responder consultas, coordinar pedidos y entregas, confirmar formas de pago y mantener la seguridad del sitio. No se usan para publicidad ni se venden a terceros.</p>
+
+            <h2>Con quién se comparten</h2>
+            <p>Los mensajes se envían mediante WhatsApp, sujeto a su propia política de privacidad. El sitio se aloja en Vercel y usa tipografías de Google Fonts. No se comparten datos con otros terceros.</p>
+
+            <h2>Conservación</h2>
+            <p>El carrito y el tema quedan en tu navegador hasta que los borres o limpies los datos del sitio. Los mensajes de WhatsApp se conservan según la configuración de WhatsApp y el tiempo necesario para gestionar el pedido.</p>
+
+            <h2>Pagos</h2>
+            <p>El sitio no procesa pagos en línea. Las formas de pago se coordinan por WhatsApp.</p>
+
+            <h2>Tus derechos</h2>
+            <p>Podés solicitar acceso, corrección o eliminación de los datos que hayas enviado. Escribinos por WhatsApp al <a href="https://wa.me/542235023826?text=Hola%20Sabor%20del%20Norte%2C%20quiero%20consultar%20por%20mis%20datos." target="_blank" rel="noopener noreferrer">+54 223 502 3826</a>.</p>
+
+            <h2>Cambios</h2>
+            <p>Si cambia esta política, actualizaremos la fecha en esta página.</p>
+
+            <h2>Contacto</h2>
+            <p>Para consultas sobre privacidad, escribinos por WhatsApp al <a href="https://wa.me/542235023826?text=Hola%20Sabor%20del%20Norte%2C%20quiero%20consultar%20por%20mis%20datos." target="_blank" rel="noopener noreferrer">+54 223 502 3826</a>.</p>
+        </div>
+
+        <p><a class="boton boton-primario" href="index.html">Volver al inicio</a></p>
+    </main>
+
+    <footer class="site-footer">
+        <div class="contenedor">
+            <p>&copy; <span id="anio">2026</span> José Carlos Alayo Mondragón</p>
+            <p><a href="privacidad.html">Política de privacidad</a></p>
+            <p class="nota nota-clara">Delivery en Mar del Plata. Pedidos por WhatsApp.</p>
+        </div>
+    </footer>
+
+    <a class="whatsapp-flotante" href="https://wa.me/542235023826?text=Hola%20Sabor%20del%20Norte%2C%20quiero%20hacer%20un%20pedido." target="_blank" rel="noopener noreferrer" aria-label="Abrir WhatsApp para pedir (se abre en una pestaña nueva)">
+        <img src="img/whatsapp.jpeg" alt="" width="30" height="30">
+    </a>
+
+    <div id="offline-aviso" class="offline-aviso" role="status" hidden>Estás sin conexión. Algunas funciones pueden no estar disponibles.</div>
+
+    <script src="main.js" defer></script>
+</body>
+</html>

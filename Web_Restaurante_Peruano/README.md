@@ -1,51 +1,60 @@
 # Sabor del Norte
 
-**Sabor del Norte** es un sitio web moderno y responsivo para un restaurante de comida peruana en Argentina. Permite a los usuarios explorar platos típicos, agregar pedidos a un carrito de compras, aplicar cupones de descuento y enviar su pedido de manera sencilla. El sitio incluye funcionalidades como modo nocturno, carrusel de imágenes, mapa interactivo de regiones gastronómicas, promociones, valoraciones de clientes, preguntas frecuentes filtrables y un chat de soporte simulado.
+Sitio de **Sabor del Norte**, marca de comida peruana por delivery en el centro y macrocentro de Mar del Plata. Los pedidos se arman en el carrito y se confirman por WhatsApp.
 
-## Descripción
+## Funcionalidad
 
-Este proyecto está diseñado para ofrecer una experiencia de usuario atractiva y eficiente, tanto en computadoras como en dispositivos móviles. El objetivo es facilitar el proceso de pedido online de viandas peruanas, mostrar la riqueza gastronómica del Perú y fortalecer la fidelización de los clientes mediante sellos y promociones.
+- Catálogo de platos con precios y descripciones.
+- Carrito persistente en el navegador, con subtotal, envío y total.
+- Envío del pedido por WhatsApp con el resumen de platos.
+- Información de zonas, horarios, envío y medios de pago.
+- Carrusel de platos destacados con acceso directo al carrito.
+- Preguntas frecuentes con buscador.
+- Formulario de contacto que arma un mensaje para WhatsApp.
+- Tema claro/oscuro y diseño responsive.
+- Página de política de privacidad.
 
-## Características principales
+## Datos del servicio
 
-- **Catálogo de platos típicos peruanos** con imágenes y descripciones.
-- **Carrito de compras**: agrega, elimina y visualiza tus pedidos antes de enviarlos.
-- **Cupones de descuento** y promociones semanales.
-- **Modo nocturno** para mayor comodidad visual.
-- **Carrusel de imágenes** de platos y paisajes.
-- **Mapa interactivo** para conocer el origen de los platos.
-- **Valoraciones y comentarios** de clientes.
-- **Preguntas frecuentes** con buscador y filtros rápidos.
-- **Chat de soporte** simulado.
-- **Rueda de la suerte** para premios y descuentos.
-- **Diseño responsive** y soporte básico PWA.
+- **Zona:** centro y macrocentro de Mar del Plata.
+- **Horarios:** todos los días, de 12:00 a 15:30 y de 19:30 a 23:30.
+- **Envío:** $2.000, sin mínimo de pedido.
+- **Pagos:** efectivo, transferencia y Mercado Pago.
+- **WhatsApp:** +54 223 502 3826.
 
-## Instalación y uso
+## Uso local
 
-1. Descarga o clona este repositorio.
-2. Abre `index.html` en tu navegador.
-3. Para desarrollo local, puedes usar un servidor local (Live Server, http-server, etc).
+No requiere instalación ni build. Abrí `index.html` en el navegador o serví la carpeta con un servidor local:
 
-## Estructura de archivos
+```bash
+npx serve .
+```
 
-- `index.html` — Página principal.
-- `components.css` — Estilos de componentes y layout.
-- `styles.css` — Estilos generales.
-- `main.js` y `components.js` — Lógica de interacción y funcionalidades.
-- `img/` — Imágenes de platos, banderas, etc.
-- `manifest.json` — Configuración PWA.
-- `sw.js` — Service Worker (opcional para PWA).
+## Estructura
 
-## Personalización
+- `index.html`: página principal.
+- `privacidad.html`: política de privacidad.
+- `styles.css`: estilos del sitio.
+- `main.js`: carrito, tema, carrusel, FAQ y contacto.
+- `img/`: imágenes de platos e identidad visual.
 
-- Edita los platos y precios en la sección de platos en `index.html`.
-- Cambia imágenes en la carpeta `img/`.
-- Modifica colores y fuentes en `components.css`.
+## Edición de contenido
 
-## Créditos
+- Los platos, precios y textos están en `index.html`.
+- La zona, horarios, envío y pagos se repiten en `index.html` y `privacidad.html` cuando corresponde.
+- Los colores y tokens visuales están en `styles.css`.
+- El número de WhatsApp se toma del enlace flotante y de los enlaces de pedido/contacto.
 
-Desarrollado por José Mondragón.
+## Imágenes
 
----
+Las imágenes actuales son ilustrativas. Antes de publicar, reemplazalas por fotografías propias o material con licencia para uso comercial.
 
-¡Buen provecho!
+## Despliegue
+
+El sitio se publica desde la raíz de esta carpeta en Vercel:
+
+`https://web-restaurant-kj1e.vercel.app/`
+
+## Autor
+
+José Carlos Alayo Mondragón.

@@ -1,698 +1,407 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="claro">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sabor del Norte</title>
-    <meta name="description" content="Viandas y delivery de auténtica comida peruana en Argentina. Sabor del Norte: Platos típicos, promociones, pedidos online y fidelidad.">
+    <title>Sabor del Norte | Delivery de comida peruana en Mar del Plata</title>
+    <meta name="description" content="Comida peruana por delivery en el centro y macrocentro de Mar del Plata. Platos típicos, envío a domicilio y pedidos por WhatsApp.">
+    <meta name="theme-color" content="#b71c1c">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://web-restaurant-kj1e.vercel.app/">
+
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="es_AR">
+    <meta property="og:title" content="Sabor del Norte | Delivery de comida peruana">
+    <meta property="og:description" content="Platos típicos peruanos con delivery en el centro y macrocentro de Mar del Plata. Pedidos por WhatsApp.">
+    <meta property="og:url" content="https://web-restaurant-kj1e.vercel.app/">
+    <meta property="og:image" content="https://web-restaurant-kj1e.vercel.app/img/carrusel1.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <link rel="icon" href="img/logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="img/logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800&family=Pacifico&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="components.css">
-    <link rel="icon" href="img/logo.png">
-    <link rel="manifest" href="manifest.json">
-    <!-- Google Fonts para el nombre del restaurante -->
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Montserrat:wght@700&display=swap" rel="stylesheet">
-    <!-- Google Analytics (ejemplo básico) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-XXXXXXXXXX');
+        try {
+            if (localStorage.getItem('sabor-tema') === 'oscuro') {
+                document.documentElement.dataset.theme = 'oscuro';
+                document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#211a16');
+            }
+        } catch (error) {
+            /* Sin acceso a localStorage: se usa el tema claro. */
+        }
     </script>
 </head>
 <body>
-    <header>
-       
-        <!-- Sello de fidelidad -->
-        <div id="fidelidad" style="position:absolute;top:10px;right:10px;z-index:10;background:#fff3e0;color:#b71c1c;padding:0.5em 1em;border-radius:12px;font-weight:bold;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
-            Sello Fidelidad: <span id="sello-count">0</span>/5 ⭐
-        </div>
-        <div class="carousel-container full-width" style="max-height:180px;">
-            <div class="carousel-track" id="carousel-track" style="display:flex;transition:transform 0.5s;">
-                <img src="img/carrusel1.jpg" class="carousel-img fade-in" alt="Ceviche peruano fresco" loading="lazy" style="flex:0 0 50%;max-width:50%;">
-                <img src="img/carrusel2.jpg" class="carousel-img fade-in" alt="Lomo Saltado tradicional" loading="lazy" style="flex:0 0 50%;max-width:50%;">
-                <img src="img/carrusel3.jpg" class="carousel-img fade-in" alt="Causa Limeña" loading="lazy" style="flex:0 0 50%;max-width:50%;">
-                <img src="img/carrusel4.jpg" class="carousel-img fade-in" alt="Anticuchos" loading="lazy" style="flex:0 0 50%;max-width:50%;">
-                <img src="img/carrusel5.jpeg" class="carousel-img fade-in" alt="Papa a la Huancaína" loading="lazy" style="flex:0 0 50%;max-width:50%;">
-                <img src="img/carrusel6.jpg" class="carousel-img fade-in" alt="Suspiro Limeño" loading="lazy" style="flex:0 0 50%;max-width:50%;">
-                <!-- ...puedes añadir más imágenes de comidas o paisajes... -->
+    <a class="skip-link" href="#contenido">Saltar al contenido principal</a>
+
+    <header class="site-header">
+        <div class="contenedor header-inner">
+            <a class="marca" href="#inicio" aria-label="Sabor del Norte, ir al inicio">
+                <img src="img/logo.png" alt="" width="48" height="48" class="marca-logo">
+                <span>Sabor del Norte</span>
+            </a>
+
+            <nav aria-label="Navegación principal">
+                <ul class="nav-list">
+                    <li><a href="#platos">Platos</a></li>
+                    <li><a href="#delivery">Delivery</a></li>
+                    <li><a href="#preguntas">Preguntas</a></li>
+                    <li><a href="#contacto">Contacto</a></li>
+                </ul>
+            </nav>
+
+            <div class="acciones">
+                <button id="tema-btn" class="icono-btn" type="button" aria-label="Activar modo oscuro" aria-pressed="false">🌙</button>
+                <button id="carrito-abrir" class="icono-btn" type="button" aria-label="Abrir carrito, 0 platos">
+                    🛒<span id="carrito-contador" class="contador" aria-hidden="true">0</span>
+                </button>
             </div>
-            <button class="carousel-btn prev" aria-label="Anterior" id="carousel-prev">&#10094;</button>
-            <button class="carousel-btn next" aria-label="Siguiente" id="carousel-next">&#10095;</button>
         </div>
-        <div class="header-top" style="display:flex;align-items:center;justify-content:center;gap:18px;margin-top:0.5em;">
-            <img src="img/bandera-peru.jpg" alt="Bandera Perú" class="bandera" style="height:48px;width:auto;">
-            <h1 class="titulo-restaurante" style="font-size:2.5em;margin:0 0.5em;letter-spacing:2px;">¡Sabor del Norte!</h1>
-            <img src="img/bandera-argentina.png" alt="Bandera Argentina" class="bandera" style="height:48px;width:auto;">
-        </div>
-        <div class="aviso-viandas" style="font-size:1em;padding:0.3em 0;">
-            <strong>¡Solo por pedidos y delivery!</strong>
-        </div>
-        <nav class="navbar">
-            <a href="#platos">Platos</a>
-            <a href="#promocion">Promociones</a>
-            <a href="#contacto">Contacto</a>
-            <a href="#pedido" class="pedido-btn">¡Haz tu pedido!</a>
-            <button id="faq-toggle-btn" style="background:none;border:none;color:#b71c1c;font-weight:bold;font-size:1.1em;cursor:pointer;padding:0.3em 1em;border-radius:8px;">Preguntas Frecuentes ▼</button>
-        </nav>
-        <button id="modo-nocturno-btn" style="position:absolute;top:10px;left:10px;z-index:10;background:#ffd600;color:#b71c1c;border:none;border-radius:8px;padding:0.3em 0.7em;width:38px;height:38px;font-size:1.3em;display:flex;align-items:center;justify-content:center;">🌙</button>
-        <button id="carrito-toggle-btn" class="fab-btn icon-btn" style="position:absolute;top:10px;left:60px;z-index:11;width:38px;height:38px;font-size:1.3em;display:flex;align-items:center;justify-content:center;">
-            🛒
-            <span id="carrito-count" style="position:absolute;top:-8px;right:-8px;background:#b71c1c;color:#fff;font-size:0.85em;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;">0</span>
-        </button>
-      
     </header>
 
-    <!-- Sugerencia del Chef -->
-    <section id="chef-sugerencia" style="background:#fff3e0;padding:1em 0;text-align:center;margin-bottom:1em;">
-        <h2>⭐ Sugerencia del Chef</h2>
-        <div id="chef-plato" style="font-size:1.2em;">
-            Hoy te recomendamos: <strong>Ají de Gallina</strong> - Un clásico cremoso y lleno de sabor del norte peruano.
-        </div>
-        <small style="color:#b71c1c;">¡Descubre cada semana una nueva sugerencia!</small>
-    </section>
-
-    <!-- Mapa interactivo -->
-    <section id="mapa-peru" style="text-align:center;margin-bottom:1em;">
-        <h2>Origen de Nuestros Platos</h2>
-        <div style="max-width:700px;margin:0 auto 1em auto;text-align:left;">
-            <p class="desc-mapa-peru">
-                Perú es un país de gran diversidad geográfica y cultural, lo que se refleja en su gastronomía. Desde la costa norte, famosa por sus ceviches y pescados frescos, pasando por la sierra con sus guisos y papas, hasta la selva con sabores exóticos y únicos. Cada plato típico cuenta una historia y representa una región, una tradición y una mezcla de culturas ancestrales y modernas.
-            </p>
-        </div>
-        <div style="position:relative;display:inline-block;">
-            <img src="img/mapa-peru.avif" alt="Mapa de Perú con regiones" style="max-width:320px;width:100%;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);" id="mapa-peru-img">
-            <div id="tooltip-mapa" style="display:none;position:absolute;top:10px;left:10px;background:#fff3e0;color:#b71c1c;padding:0.5em 1em;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.10);font-size:0.95em;z-index:10;"></div>
-            <!-- Leyenda de colores sobre la imagen -->
-            <div style="position:absolute;bottom:10px;left:10px;z-index:11;display:flex;gap:10px;">
-                <div style="display:flex;align-items:center;gap:4px;">
-                    <span style="display:inline-block;width:18px;height:18px;background:#ff9800;border-radius:4px;border:1px solid #b71c1c;"></span>
-                    <span style="font-size:0.98em;background:#fff3e0;border-radius:6px;padding:2px 7px;color:#b71c1c;">Costa</span>
+    <main id="contenido">
+        <section id="inicio" class="heroe" aria-labelledby="heroe-titulo">
+            <img class="heroe-fondo" src="img/fondo.jpg" alt="" width="600" height="400" aria-hidden="true">
+            <div class="heroe-contenido contenedor">
+                <p class="eyebrow">Cocina peruana en Mar del Plata</p>
+                <h1 id="heroe-titulo">Sabor del Norte</h1>
+                <p class="heroe-texto">Viandas y delivery con sabores de la costa, la sierra y la selva. Pedí por WhatsApp y coordinamos la entrega en el centro y macrocentro de Mar del Plata.</p>
+                <div class="heroe-acciones">
+                    <a class="boton boton-primario" href="#platos">Ver platos</a>
+                    <a class="boton boton-secundario" href="https://wa.me/542235023826?text=Hola%20Sabor%20del%20Norte%2C%20quiero%20hacer%20un%20pedido." target="_blank" rel="noopener noreferrer">Pedir por WhatsApp</a>
                 </div>
-                <div style="display:flex;align-items:center;gap:4px;">
-                    <span style="display:inline-block;width:18px;height:18px;background:#ffd600;border-radius:4px;border:1px solid #b71c1c;"></span>
-                    <span style="font-size:0.98em;background:#fff3e0;border-radius:6px;padding:2px 7px;color:#b71c1c;">Sierra</span>
+                <p class="nota nota-clara">Atendemos todos los días de 12:00 a 15:30 y de 19:30 a 23:30.</p>
+            </div>
+        </section>
+
+        <section class="seccion contenedor" aria-labelledby="destacados-titulo">
+            <div class="seccion-cabecera">
+                <h2 id="destacados-titulo">Platos destacados</h2>
+                <p>Los favoritos de la casa, listos para sumar al carrito.</p>
+            </div>
+
+            <div class="carrusel" role="region" aria-label="Platos destacados">
+                <div id="carrusel-pista" class="carrusel-pista" tabindex="0" aria-label="Platos destacados. Usá las flechas para navegar.">
+                    <article class="carrusel-slide">
+                        <img src="img/ceviche.jpg" alt="Ceviche peruano" width="275" height="183" decoding="async">
+                        <div class="carrusel-slide-contenido">
+                            <h3>Ceviche</h3>
+                            <p>Fresco pescado marinado en limón, cebolla y ají.</p>
+                            <span class="precio">$18.000</span>
+                            <button class="boton boton-primario agregar" type="button" data-nombre="Ceviche" data-precio="18000" aria-label="Agregar Ceviche al carrito">Agregar</button>
+                        </div>
+                    </article>
+
+                    <article class="carrusel-slide">
+                        <img src="img/lomo.jpg" alt="Lomo saltado peruano" width="300" height="168" loading="lazy" decoding="async">
+                        <div class="carrusel-slide-contenido">
+                            <h3>Lomo saltado</h3>
+                            <p>Salteado de carne, papas y verduras al estilo peruano.</p>
+                            <span class="precio">$15.000</span>
+                            <button class="boton boton-primario agregar" type="button" data-nombre="Lomo saltado" data-precio="15000" aria-label="Agregar Lomo saltado al carrito">Agregar</button>
+                        </div>
+                    </article>
+
+                    <article class="carrusel-slide">
+                        <img src="img/anticuchos.jpg" alt="Anticuchos peruanos" width="275" height="183" loading="lazy" decoding="async">
+                        <div class="carrusel-slide-contenido">
+                            <h3>Anticuchos</h3>
+                            <p>Brochetas de corazón de res con salsa especial.</p>
+                            <span class="precio">$15.000</span>
+                            <button class="boton boton-primario agregar" type="button" data-nombre="Anticuchos" data-precio="15000" aria-label="Agregar Anticuchos al carrito">Agregar</button>
+                        </div>
+                    </article>
+
+                    <article class="carrusel-slide">
+                        <img src="img/aji-de-gallina.jpeg" alt="Ají de gallina" width="266" height="190" loading="lazy" decoding="async">
+                        <div class="carrusel-slide-contenido">
+                            <h3>Ají de gallina</h3>
+                            <p>Pollo deshilachado en salsa cremosa de ají amarillo y nueces.</p>
+                            <span class="precio">$13.000</span>
+                            <button class="boton boton-primario agregar" type="button" data-nombre="Ají de gallina" data-precio="13000" aria-label="Agregar Ají de gallina al carrito">Agregar</button>
+                        </div>
+                    </article>
+
+                    <article class="carrusel-slide">
+                        <img src="img/tacu-tacu.jpeg" alt="Tacu tacu" width="243" height="207" loading="lazy" decoding="async">
+                        <div class="carrusel-slide-contenido">
+                            <h3>Tacu tacu</h3>
+                            <p>Mezcla de arroz y frejoles dorados con salsa criolla.</p>
+                            <span class="precio">$12.500</span>
+                            <button class="boton boton-primario agregar" type="button" data-nombre="Tacu tacu" data-precio="12500" aria-label="Agregar Tacu tacu al carrito">Agregar</button>
+                        </div>
+                    </article>
+
+                    <article class="carrusel-slide">
+                        <img src="img/arroz-chaufa.jpg" alt="Arroz chaufa" width="1200" height="802" loading="lazy" decoding="async">
+                        <div class="carrusel-slide-contenido">
+                            <h3>Arroz chaufa</h3>
+                            <p>Arroz salteado al estilo chino-peruano con pollo y verduras.</p>
+                            <span class="precio">$14.000</span>
+                            <button class="boton boton-primario agregar" type="button" data-nombre="Arroz chaufa" data-precio="14000" aria-label="Agregar Arroz chaufa al carrito">Agregar</button>
+                        </div>
+                    </article>
                 </div>
-                <div style="display:flex;align-items:center;gap:4px;">
-                    <span style="display:inline-block;width:18px;height:18px;background:#d32f2f;border-radius:4px;border:1px solid #b71c1c;"></span>
-                    <span style="font-size:0.98em;background:#fff3e0;border-radius:6px;padding:2px 7px;color:#b71c1c;">Selva</span>
+                <button id="carrusel-prev" class="carrusel-btn" type="button" aria-label="Ver plato anterior">&#10094;</button>
+                <button id="carrusel-next" class="carrusel-btn" type="button" aria-label="Ver plato siguiente">&#10095;</button>
+                <div class="carrusel-pie">
+                    <p id="carrusel-contador" class="carrusel-contador" aria-live="polite" aria-atomic="true">1 / 6</p>
+                    <div id="carrusel-puntos" class="carrusel-puntos" role="group" aria-label="Ir a un plato destacado"></div>
                 </div>
             </div>
-        </div>
-        <div id="desc-region" class="desc-region" style="margin:1em auto 0 auto;max-width:400px;font-size:1.05em;color:#b71c1c;min-height:48px;text-align:center;transition:color 0.3s;">
-            Pasa el mouse sobre el mapa para descubrir la región de cada plato.
-        </div>
-    </section>
+        </section>
 
-    <!-- Test "¿Qué plato peruano eres?" -->
-    <section style="text-align:center;margin-bottom:1em;">
-        <button id="test-plato-btn" style="background:#b71c1c;color:#fff;padding:0.7em 1.5em;border:none;border-radius:12px;font-size:1.1em;cursor:pointer;">
-            ¿Qué plato peruano eres? ¡Haz el test!
-        </button>
-    </section>
+        <section class="seccion contenedor" aria-labelledby="casa-titulo">
+            <div class="tarjeta-sugerencia">
+                <h2 id="casa-titulo">Recomendación de la casa</h2>
+                <p>Hoy te recomendamos <strong>Ají de gallina</strong>: un clásico cremoso con ají amarillo y nueces.</p>
+            </div>
+        </section>
 
-    <!-- Elimina la sección <section id="faq">... </section> que estaba visible -->
-    <div id="faq-modal" class="modal-bg">
-        <div class="modal-content faq-content">
-            <h2 style="color:#b71c1c;text-align:center;">Preguntas Frecuentes</h2>
-            <input id="faq-search" type="text" placeholder="Buscar pregunta...">
-            <div id="faq-list">
-                <!-- ...preguntas frecuentes existentes... -->
+        <section id="platos" class="seccion contenedor" aria-labelledby="platos-titulo">
+            <div class="seccion-cabecera">
+                <h2 id="platos-titulo">Platos típicos</h2>
+                <p>Precios en pesos argentinos. Delivery en centro y macrocentro de Mar del Plata con envío de $2.000.</p>
             </div>
-            <div style="text-align:center;margin-top:1em;">
-                <button onclick="document.getElementById('faq-modal').style.display='none'" style="background:#b71c1c;color:#fff;padding:0.6em 1.5em;border:none;border-radius:10px;cursor:pointer;">Cerrar</button>
-            </div>
-        </div>
-    </div>
 
-    <section id="promocion">
-        <div class="promo-banner">
-            <span id="promo-text">¡Este viernes porciones gratis de papas con tu pedido!</span>
-            <span id="cuenta-regresiva" style="margin-left:1em;color:#b71c1c;font-weight:bold;"></span>
-            <button id="vale-descuento-btn">Obtener Vale de Descuento</button>
-        </div>
-    </section>
+            <div class="platos-grid">
+                <article class="plato-card">
+                    <img src="img/ceviche.jpg" alt="Ceviche peruano" width="275" height="183" loading="lazy" decoding="async">
+                    <div class="plato-contenido">
+                        <h3>Ceviche</h3>
+                        <p>Fresco pescado marinado en limón, cebolla y ají.</p>
+                        <span class="precio">$18.000</span>
+                        <button class="boton boton-primario agregar" type="button" data-nombre="Ceviche" data-precio="18000" aria-label="Agregar Ceviche al carrito">Agregar</button>
+                    </div>
+                </article>
 
-    <section id="platos">
-        <h2>Platos Típicos</h2>
-        <div class="platos-grid">
-            <!-- Tarjetas de platos -->
-            <div class="plato-card fade-in" tabindex="0" aria-label="Ceviche. Fresco pescado marinado en limón, cebolla y ají.">
-                <img src="img/ceviche.jpg" alt="Ceviche peruano" loading="lazy">
-                <h3>Ceviche</h3>
-                <p>Fresco pescado marinado en limón, cebolla y ají.</p>
-                <span class="precio">$13.500</span>
-                <button class="pedido-btn" aria-label="Pedir Ceviche">Pedir</button>
-            </div>
-            <div class="plato-card fade-in" tabindex="0" aria-label="Lomo Saltado. Salteado de carne, papas y verduras al estilo peruano.">
-                <img src="img/lomo.jpg" alt="Lomo Saltado peruano" loading="lazy">
-                <h3>Lomo Saltado</h3>
-                <p>Salteado de carne, papas y verduras al estilo peruano.</p>
-                <span class="precio">$15.000</span>
-                <button class="pedido-btn" aria-label="Pedir Lomo Saltado">Pedir</button>
-            </div>
-            <div class="plato-card">
-                <img src="img/anticuchos.jpg" alt="Anticuchos">
-                <h3>Anticuchos</h3>
-                <p>Brochetas de corazón de res con salsa especial.</p>
-                <span class="precio">$12.000</span>
-                <button class="pedido-btn">Pedir</button>
-            </div>
-            <div class="plato-card">
-                <img src="img/aji-de-gallina.jpeg" alt="Ají de Gallina">
-                <h3>Ají de Gallina</h3>
-                <p>Pollo deshilachado en salsa cremosa de ají amarillo y nueces.</p>
-                <span class="precio">$13.000</span>
-                <button class="pedido-btn">Pedir</button>
-            </div>
-            <div class="plato-card">
-                <img src="img/tacu-tacu.jpeg" alt="Tacu Tacu">
-                <h3>Tacu Tacu</h3>
-                <p>Mezcla de arroz y frejoles dorados, acompañado de salsa criolla.</p>
-                <span class="precio">$12.500</span>
-                <button class="pedido-btn">Pedir</button>
-            </div>
-            <div class="plato-card">
-                <img src="img/arroz-chaufa.jpg" alt="Arroz Chaufa">
-                <h3>Arroz Chaufa</h3>
-                <p>Arroz salteado al estilo chino-peruano con pollo y verduras.</p>
-                <span class="precio">$14.000</span>
-                <button class="pedido-btn" aria-label="Pedir Arroz Chaufa">Pedir</button>
-            </div>
-            <!-- ...puedes añadir más platos... -->
-        </div>
-    </section>
+                <article class="plato-card">
+                    <img src="img/lomo.jpg" alt="Lomo saltado peruano" width="300" height="168" loading="lazy" decoding="async">
+                    <div class="plato-contenido">
+                        <h3>Lomo saltado</h3>
+                        <p>Salteado de carne, papas y verduras al estilo peruano.</p>
+                        <span class="precio">$15.000</span>
+                        <button class="boton boton-primario agregar" type="button" data-nombre="Lomo saltado" data-precio="15000" aria-label="Agregar Lomo saltado al carrito">Agregar</button>
+                    </div>
+                </article>
 
-    <section id="contacto-comentarios" style="display:flex;justify-content:center;align-items:flex-start;gap:0.5em;flex-wrap:wrap;margin-bottom:2em;">
-        <div id="contacto" style="flex:1 1 320px;max-width:400px;min-width:260px;background:#fff3e0;border-radius:14px;padding:1.2em 1em;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
-            <h2 style="color:#b71c1c;">Contacto</h2>
-            <form id="contact-form" novalidate>
-                <input type="text" name="nombre" placeholder="Tu nombre" required aria-required="true" style="margin-bottom:0.7em;">
-                <input type="email" name="email" placeholder="Tu correo" required aria-required="true" style="margin-bottom:0.7em;">
-                <textarea name="mensaje" placeholder="Tu mensaje" required aria-required="true" style="margin-bottom:0.7em;"></textarea>
-                <div id="form-error" style="color:#b71c1c;display:none;margin-bottom:0.5em;"></div>
-                <button type="submit" style="background:#b71c1c;color:#fff;border:none;border-radius:8px;padding:0.7em;font-size:1em;cursor:pointer;">Enviar</button>
-            </form>
-            <div class="contact-logos" style="margin-top:1em; display:flex; justify-content:center; gap:18px;">
-                <a href="https://wa.me/542235023826" target="_blank" title="WhatsApp">
-                    <img src="img/whatsapp.jpeg" alt="WhatsApp" style="height:32px;width:32px;">
-                </a>
-                <a href="#" title="Instagram">
-                    <img src="img/instagram.jpeg" alt="Instagram" style="height:32px;width:32px;">
-                </a>
-            </div>
-        </div>
-        <div class="valoraciones" style="flex:1 1 320px;max-width:400px;min-width:260px;background:#fff3e0;border-radius:14px;padding:1.2em 1em;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
-            <label for="valoracion-select" style="color:#b71c1c;font-weight:bold;">Califica tu experiencia:</label>
-            <select id="valoracion-select" style="margin-bottom:0.7em;">
-                <option value="">Selecciona</option>
-                <option value="5">⭐⭐⭐⭐⭐ Excelente</option>
-                <option value="4">⭐⭐⭐⭐ Muy bueno</option>
-                <option value="3">⭐⭐⭐ Bueno</option>
-                <option value="2">⭐⭐ Regular</option>
-                <option value="1">⭐ Malo</option>
-            </select>
-            <textarea id="comentario-input" placeholder="Deja tu comentario..." style="margin-bottom:0.7em;"></textarea>
-            <button id="enviar-valoracion" style="background:#b71c1c;color:#fff;border:none;border-radius:8px;padding:0.7em 1em;cursor:pointer;">Enviar</button>
-            <div id="valoraciones-lista"></div>
-        </div>
-    </section>
+                <article class="plato-card">
+                    <img src="img/anticuchos.jpg" alt="Anticuchos peruanos" width="275" height="183" loading="lazy" decoding="async">
+                    <div class="plato-contenido">
+                        <h3>Anticuchos</h3>
+                        <p>Brochetas de corazón de res con salsa especial.</p>
+                        <span class="precio">$15.000</span>
+                        <button class="boton boton-primario agregar" type="button" data-nombre="Anticuchos" data-precio="15000" aria-label="Agregar Anticuchos al carrito">Agregar</button>
+                    </div>
+                </article>
 
-    <footer>
-        <p>&copy; 2025 José Mondragón</p>
-        <p>Todos los derechos reservados.</p>
-        <div class="footer-aviso">
-            <strong>¡Solo delivery! Pedí tu vianda peruana ahora.</strong>
-        </div>
-        <div style="margin-top:1em;">
-            <a href="privacidad.html" style="color:#b71c1c;text-decoration:underline;">Política de Privacidad</a>
+                <article class="plato-card">
+                    <img src="img/aji-de-gallina.jpeg" alt="Ají de gallina" width="266" height="190" loading="lazy" decoding="async">
+                    <div class="plato-contenido">
+                        <h3>Ají de gallina</h3>
+                        <p>Pollo deshilachado en salsa cremosa de ají amarillo y nueces.</p>
+                        <span class="precio">$13.000</span>
+                        <button class="boton boton-primario agregar" type="button" data-nombre="Ají de gallina" data-precio="13000" aria-label="Agregar Ají de gallina al carrito">Agregar</button>
+                    </div>
+                </article>
+
+                <article class="plato-card">
+                    <img src="img/tacu-tacu.jpeg" alt="Tacu tacu" width="243" height="207" loading="lazy" decoding="async">
+                    <div class="plato-contenido">
+                        <h3>Tacu tacu</h3>
+                        <p>Mezcla de arroz y frejoles dorados con salsa criolla.</p>
+                        <span class="precio">$12.500</span>
+                        <button class="boton boton-primario agregar" type="button" data-nombre="Tacu tacu" data-precio="12500" aria-label="Agregar Tacu tacu al carrito">Agregar</button>
+                    </div>
+                </article>
+
+                <article class="plato-card">
+                    <img src="img/arroz-chaufa.jpg" alt="Arroz chaufa" width="1200" height="802" loading="lazy" decoding="async">
+                    <div class="plato-contenido">
+                        <h3>Arroz chaufa</h3>
+                        <p>Arroz salteado al estilo chino-peruano con pollo y verduras.</p>
+                        <span class="precio">$14.000</span>
+                        <button class="boton boton-primario agregar" type="button" data-nombre="Arroz chaufa" data-precio="14000" aria-label="Agregar Arroz chaufa al carrito">Agregar</button>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section id="delivery" class="seccion contenedor" aria-labelledby="delivery-titulo">
+            <div class="seccion-cabecera">
+                <h2 id="delivery-titulo">Delivery en Mar del Plata</h2>
+                <p>Entregamos en centro y macrocentro. Coordinamos zona, horario y pago por WhatsApp.</p>
+            </div>
+
+            <div class="contacto-grid">
+                <div class="panel">
+                    <h3>Zonas y envío</h3>
+                    <p><strong>Zona:</strong> centro y macrocentro de Mar del Plata.</p>
+                    <p><strong>Envío:</strong> $2.000.</p>
+                    <p><strong>Mínimo:</strong> sin mínimo de pedido.</p>
+                    <p><strong>Horarios:</strong> todos los días, de 12:00 a 15:30 y de 19:30 a 23:30.</p>
+                </div>
+
+                <div class="panel">
+                    <h3>Cómo pedir</h3>
+                    <ol class="lista-pasos">
+                        <li>Elegí tus platos y agregalos al carrito.</li>
+                        <li>Enviá el pedido por WhatsApp.</li>
+                        <li>Confirmamos zona, horario y forma de pago.</li>
+                    </ol>
+                    <p><strong>Pagos:</strong> efectivo, transferencia y Mercado Pago.</p>
+                    <a class="boton boton-primario" href="https://wa.me/542235023826?text=Hola%20Sabor%20del%20Norte%2C%20quiero%20hacer%20un%20pedido." target="_blank" rel="noopener noreferrer">Pedir por WhatsApp</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="preguntas" class="seccion contenedor" aria-labelledby="faq-titulo">
+            <div class="seccion-cabecera">
+                <h2 id="faq-titulo">Preguntas frecuentes</h2>
+                <label for="faq-buscar">Buscar una pregunta</label>
+                <input id="faq-buscar" type="search" placeholder="Ej. envíos, pagos, horarios" autocomplete="off">
+            </div>
+
+            <div id="faq-lista" class="faq-lista">
+                <details class="faq-item">
+                    <summary>¿Cómo hago un pedido?</summary>
+                    <p>Agregá platos al carrito y usá el botón “Enviar pedido”. Se abre WhatsApp con el resumen; confirmamos disponibilidad, zona y horario en el chat.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>¿Hacen envíos a domicilio?</summary>
+                    <p>Sí. Entregamos en centro y macrocentro de Mar del Plata. El envío cuesta $2.000 y no hay mínimo de pedido.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>¿Cuál es el horario de atención?</summary>
+                    <p>Atendemos todos los días de 12:00 a 15:30 y de 19:30 a 23:30.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>¿Qué medios de pago aceptan?</summary>
+                    <p>Aceptamos efectivo, transferencia y Mercado Pago. La forma de pago se confirma al cerrar el pedido por WhatsApp.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>¿Hay mínimo de pedido?</summary>
+                    <p>No. Podés pedir desde un plato, con un envío de $2.000.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>¿Tienen opciones para personas con alergias?</summary>
+                    <p>Consultá por ingredientes y alergias por WhatsApp antes de pedir. Te confirmamos antes de preparar el pedido.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>¿Los precios son los definitivos?</summary>
+                    <p>Los precios publicados están en pesos argentinos. Si hay una actualización, te la informamos por WhatsApp antes de confirmar el pedido.</p>
+                </details>
+            </div>
+            <p id="faq-vacio" class="aviso" role="status" hidden>No se encontraron preguntas con ese texto.</p>
+        </section>
+
+        <section id="contacto" class="seccion contenedor" aria-labelledby="contacto-titulo">
+            <div class="seccion-cabecera">
+                <h2 id="contacto-titulo">Contacto</h2>
+                <p>Escribinos por WhatsApp o completá el formulario. Al enviar, se abre un mensaje con tus datos.</p>
+            </div>
+
+            <div class="contacto-grid">
+                <div class="panel">
+                    <h3>Escribinos</h3>
+                    <form id="contact-form" class="formulario" novalidate>
+                        <div class="campo">
+                            <label for="contacto-nombre">Nombre</label>
+                            <input id="contacto-nombre" name="nombre" type="text" autocomplete="name" required>
+                        </div>
+                        <div class="campo">
+                            <label for="contacto-email">Correo electrónico</label>
+                            <input id="contacto-email" name="email" type="email" autocomplete="email" required>
+                        </div>
+                        <div class="campo">
+                            <label for="contacto-mensaje">Mensaje</label>
+                            <textarea id="contacto-mensaje" name="mensaje" rows="4" required></textarea>
+                        </div>
+                        <button class="boton boton-primario" type="submit">Enviar por WhatsApp</button>
+                        <p id="form-estado" class="aviso" role="status" aria-live="polite"></p>
+                        <p class="nota">Al enviar, se abre WhatsApp con tu mensaje.</p>
+                    </form>
+                </div>
+
+                <div class="panel">
+                    <h3>Pedidos y consultas</h3>
+                    <p>Atendemos todos los días de 12:00 a 15:30 y de 19:30 a 23:30.</p>
+                    <p>Delivery en centro y macrocentro de Mar del Plata. Envío $2.000. Sin mínimo de pedido.</p>
+                    <p><strong>Pagos:</strong> efectivo, transferencia y Mercado Pago.</p>
+                    <a class="boton boton-secundario" href="https://wa.me/542235023826?text=Hola%20Sabor%20del%20Norte%2C%20quiero%20hacer%20una%20consulta." target="_blank" rel="noopener noreferrer">Escribir por WhatsApp</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="contenedor">
+            <p>&copy; <span id="anio">2026</span> José Carlos Alayo Mondragón</p>
+            <p><a href="privacidad.html">Política de privacidad</a></p>
+            <p class="nota nota-clara">Delivery en Mar del Plata. Pedidos por WhatsApp.</p>
         </div>
     </footer>
 
-    <a href="https://wa.me/542235023826?text=Quiero%20el%20menú%20del%20día%20por%20favor!" target="_blank" id="pedido-express"
-       style="position:fixed;bottom:100px;right:20px;z-index:1000;background:#25d366;color:#fff;padding:0.8em 1.2em;border-radius:50px;box-shadow:0 2px 8px rgba(0,0,0,0.15);font-weight:bold;display:flex;align-items:center;gap:0.5em;text-decoration:none;">
-        <img src="img/whatsapp.jpeg" alt="WhatsApp" style="height:24px;width:24px;"> Pedido Express
+    <a class="whatsapp-flotante" href="https://wa.me/542235023826?text=Hola%20Sabor%20del%20Norte%2C%20quiero%20hacer%20un%20pedido." target="_blank" rel="noopener noreferrer" aria-label="Abrir WhatsApp para pedir (se abre en una pestaña nueva)">
+        <img src="img/whatsapp.jpeg" alt="" width="30" height="30">
     </a>
-    <div id="pedido-express-aviso" style="position:fixed;bottom:75px;right:20px;z-index:1001;background:#fff3e0;color:#b71c1c;padding:0.4em 1em;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.10);font-size:0.98em;">
-        <!-- <span style="font-weight:bold;">Nota:</span> El Pedido Express tiene un pequeño recargo por prioridad de atención. -->
-    </div>
 
-    <!-- Rueda de la Suerte -->
-    <button id="rueda-btn" style="position:fixed;bottom:30px;right:30px;z-index:1000;background:#ffd600;color:#b71c1c;border:none;border-radius:50%;width:60px;height:60px;font-size:2em;box-shadow:0 2px 8px rgba(0,0,0,0.15);cursor:pointer;">
-        🎁
-    </button>
-    <div id="rueda-modal" class="modal-bg">
-        <div id="rueda-modal-content" class="modal-content rueda-content">
-            <h2 style="color:inherit;">¡Rueda de la Suerte!</h2>
-            <p style="color:inherit;">Girá y ganá premios: descuentos, postres gratis o envío sin cargo.</p>
-            <button id="girar-rueda" style="background:#b71c1c;color:#fff;padding:0.7em 1.5em;border:none;border-radius:12px;font-size:1.1em;cursor:pointer;">Girar</button>
-            <div id="resultado-rueda" style="margin-top:1em;font-weight:bold;color:#b71c1c;"></div>
-            <button onclick="document.getElementById('rueda-modal').style.display='none'" style="margin-top:1em;background:#ffd600;color:#b71c1c;border:none;border-radius:8px;padding:0.5em 1em;cursor:pointer;">Cerrar</button>
+    <dialog id="carrito-dialog" class="dialogo" aria-labelledby="carrito-titulo">
+        <div class="dialogo-cabecera">
+            <h2 id="carrito-titulo">Tu pedido</h2>
+            <button class="cerrar" type="button" data-cerrar aria-label="Cerrar carrito">&times;</button>
         </div>
-    </div>
 
-    <!-- Test Modal -->
-    <div id="test-modal" class="modal-bg">
-        <div class="modal-content test-content">
-            <h2>¿Qué plato peruano eres?</h2>
-            <div id="test-content">
-                <p>¿Prefieres algo fresco, caliente o picante?</p>
-                <button onclick="mostrarResultadoTest('Ceviche')" style="margin:0.5em;">Fresco</button>
-                <button onclick="mostrarResultadoTest('Lomo Saltado')" style="margin:0.5em;">Caliente</button>
-                <button onclick="mostrarResultadoTest('Ají de Gallina')" style="margin:0.5em;">Picante</button>
+        <ul id="carrito-lista" class="carrito-lista"></ul>
+        <p id="carrito-vacio" class="nota">No agregaste platos todavía.</p>
+
+        <p id="carrito-total" class="total">Total: $0</p>
+        <p class="nota">El envío de $2.000 en centro y macrocentro se suma al total. El pedido se confirma por WhatsApp.</p>
+
+        <form id="pedido-form" class="pedido-form" novalidate>
+            <h3 class="pedido-subtitulo">Datos de entrega</h3>
+            <div class="pedido-datos">
+                <div class="campo">
+                    <label for="pedido-nombre">Nombre</label>
+                    <input id="pedido-nombre" name="nombre" type="text" autocomplete="name" required>
+                </div>
+                <div class="campo">
+                    <label for="pedido-direccion">Zona y dirección</label>
+                    <input id="pedido-direccion" name="direccion" type="text" autocomplete="street-address" placeholder="Centro o macrocentro, calle y número" required>
+                </div>
+                <div class="campo">
+                    <label for="pedido-horario">Horario preferido</label>
+                    <input id="pedido-horario" name="horario" type="text" placeholder="Ej. 20:30" required>
+                </div>
+                <div class="campo">
+                    <label for="pedido-pago">Forma de pago</label>
+                    <select id="pedido-pago" name="pago" required>
+                        <option value="">Elegí una opción</option>
+                        <option value="Efectivo">Efectivo</option>
+                        <option value="Transferencia">Transferencia</option>
+                        <option value="Mercado Pago">Mercado Pago</option>
+                    </select>
+                </div>
             </div>
-            <div id="test-resultado" style="margin-top:1em;font-weight:bold;color:#b71c1c;"></div>
-            <button onclick="document.getElementById('test-modal').style.display='none'" style="margin-top:1em;background:#ffd600;color:#b71c1c;border:none;border-radius:8px;padding:0.5em 1em;cursor:pointer;">Cerrar</button>
-        </div>
-    </div>
+            <p class="nota">Estos datos se incluyen en el mensaje de WhatsApp; no se guardan en el sitio.</p>
 
-    <!-- 1. Carrito de pedidos: Botón flotante y modal -->
-    <button id="carrito-toggle-btn" class="fab-btn carrito-fab">🛒</button>
-    <div id="carrito-modal" class="modal-bg">
-        <div class="carrito-content modal-content">
-            <h2>Tu Pedido</h2>
-            <ul id="carrito-lista"></ul>
-            <div id="carrito-total"></div>
-            <div id="cupon-section">
-                <input type="text" id="cupon-input" placeholder="Cupón de descuento">
-                <button id="cupon-aplicar">Aplicar</button>
-                <div id="cupon-msg" style="margin-top:0.5em;font-size:0.95em;"></div>
+            <div class="dialogo-acciones">
+                <button id="carrito-vaciar" class="boton boton-secundario" type="button">Vaciar</button>
+                <button id="carrito-enviar" class="boton boton-primario" type="submit">Enviar pedido</button>
             </div>
-            <button id="carrito-agregar" style="background:#ffd600;color:#b71c1c;border:none;border-radius:8px;padding:0.7em 1.2em;margin-top:1em;cursor:pointer;">Agregar otro pedido</button>
-            <button id="carrito-enviar">Enviar Pedido</button>
-            <button class="vaciar-btn" id="carrito-vaciar">Vaciar</button>
-            <button onclick="document.getElementById('carrito-modal').style.display='none'">Cerrar</button>
-        </div>
-    </div>
+            <p id="carrito-msg" class="aviso" role="status" aria-live="polite"></p>
+        </form>
+    </dialog>
 
-    <!-- 2. Notificaciones push -->
-    <button id="push-btn" class="fab-btn push-fab" title="Activa notificaciones de promos">🔔 Activar Notificaciones</button>
+    <div id="offline-aviso" class="offline-aviso" role="status" hidden>Estás sin conexión. Algunas funciones pueden no estar disponibles.</div>
 
-    
-  
+    <noscript>
+        <p class="aviso-noscript">Este sitio necesita JavaScript para el carrito y las interacciones. El contenido principal sigue siendo visible.</p>
+    </noscript>
 
-    <!-- 14. Chat de soporte -->
-    <div id="chat-soporte" class="chat-modal" style="display:none;">
-        <div id="chat-header">
-            Soporte en línea
-            <button onclick="document.getElementById('chat-soporte').style.display='none'" style="float:right;background:none;border:none;color:#fff;font-size:1.2em;cursor:pointer;">×</button>
-        </div>
-        <div id="chat-mensajes" style="min-height:80px;"></div>
-        <div id="chat-input-area">
-            <input id="chat-input" type="text" placeholder="Escribe tu mensaje...">
-            <button id="chat-enviar">Enviar</button>
-        </div>
-        <div style="font-size:0.95em;color:#888;text-align:center;margin-top:0.5em;">
-            También puedes escribirnos por WhatsApp para soporte inmediato.
-        </div>
-    </div>
-
-    <!-- 15. Modo offline aviso -->
-    <div id="offline-aviso">Estás sin conexión. Algunas funciones pueden no estar disponibles.</div>
-
-    <script src="main.js"></script>
-    <script src="components.js"></script>
-    <script>
-    // Modo nocturno
-    document.getElementById('modo-nocturno-btn').onclick = function() {
-        document.body.classList.toggle('modo-nocturno');
-    };
-
-    // Rueda de la Suerte
-    document.getElementById('rueda-btn').onclick = function() {
-        document.getElementById('rueda-modal').style.display = 'flex';
-    };
-    document.getElementById('girar-rueda').onclick = function() {
-        const premios = [
-            '10% de descuento en tu pedido',
-            'Postre gratis',
-            'Envío sin cargo',
-            'Vale 2x1 para tu próxima vianda',
-            '¡Sigue participando!'
-        ];
-        const premio = premios[Math.floor(Math.random() * premios.length)];
-        document.getElementById('resultado-rueda').innerText = premio;
-    };
-
-    // Test plato peruano
-    document.getElementById('test-plato-btn').onclick = function() {
-        document.getElementById('test-modal').style.display = 'flex';
-        document.getElementById('test-resultado').innerText = '';
-    };
-    window.mostrarResultadoTest = function(plato) {
-        document.getElementById('test-resultado').innerText = '¡Eres ' + plato + '! Te recomendamos pedirlo hoy.';
-    };
-
-    // Sello de fidelidad (simulado)
-    let sellos = 0;
-    document.querySelectorAll('.pedido-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            sellos++;
-            document.getElementById('sello-count').innerText = sellos;
-            if (sellos >= 5) {
-                alert('¡Felicitaciones! Has ganado una vianda gratis por fidelidad.');
-                sellos = 0;
-                document.getElementById('sello-count').innerText = sellos;
-            }
-        });
-    });
-
-    // Cuenta regresiva para promo
-    function actualizarCuentaRegresiva() {
-        const promoDate = new Date();
-        promoDate.setDate(promoDate.getDate() + ((5 - promoDate.getDay() + 7) % 7)); // próximo viernes
-        promoDate.setHours(0,0,0,0);
-        const now = new Date();
-        const diff = promoDate - now;
-        if (diff > 0) {
-            const dias = Math.floor(diff / (1000*60*60*24));
-            const horas = Math.floor((diff/(1000*60*60))%24);
-            const minutos = Math.floor((diff/(1000*60))%60);
-            document.getElementById('cuenta-regresiva').innerText = `Faltan ${dias}d ${horas}h ${minutos}m`;
-        } else {
-            document.getElementById('cuenta-regresiva').innerText = '';
-        }
-    }
-    setInterval(actualizarCuentaRegresiva, 60000);
-    actualizarCuentaRegresiva();
-
-    // Validación de formulario y feedback visual
-    document.getElementById('contact-form').onsubmit = function(e) {
-        e.preventDefault();
-        var nombre = this.nombre.value.trim();
-        var email = this.email.value.trim();
-        var mensaje = this.mensaje.value.trim();
-        var error = "";
-        if (!nombre) error = "Por favor ingresa tu nombre.";
-        else if (!email || !/^[^@]+@[^@]+\.[a-z]{2,}$/i.test(email)) error = "Correo inválido.";
-        else if (!mensaje) error = "Por favor ingresa tu mensaje.";
-        if (error) {
-            document.getElementById('form-error').innerText = error;
-            document.getElementById('form-error').style.display = "block";
-            return false;
-        }
-        document.getElementById('form-error').style.display = "none";
-        alert("¡Gracias por contactarnos! Te responderemos pronto.");
-        this.reset();
-    };
-
-    // Feedback visual al pedir
-    document.querySelectorAll('.pedido-btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.preventDefault();
-            let card = btn.closest('.plato-card');
-            let nombre = card.querySelector('h3').innerText;
-            let precio = parseInt(card.querySelector('.precio').innerText.replace(/\D/g, ''));
-            carrito.push({nombre, precio});
-            actualizarCarrito();
-            card.classList.add('pedido-ok');
-            setTimeout(() => card.classList.remove('pedido-ok'), 1200);
-            // No abrir WhatsApp, solo agregar al carrito
-            document.getElementById('carrito-modal').style.display = 'flex';
-        });
-    });
-
-    // Mapa interactivo (tooltip simple y descripción dinámica)
-    const mapa = document.getElementById('mapa-peru-img');
-    const tooltip = document.getElementById('tooltip-mapa');
-    const descRegion = document.getElementById('desc-region');
-    if (mapa) {
-        mapa.addEventListener('mousemove', function(e) {
-            let x = e.offsetX / mapa.offsetWidth;
-            let region = "Costa Norte";
-            let descripcion = "Ceviche, arroz con mariscos, tiraditos y pescados frescos.";
-            if (x < 0.33) {
-                region = "Costa Norte";
-                descripcion = "Ceviche, arroz con mariscos, tiraditos y pescados frescos.";
-            } else if (x < 0.66) {
-                region = "Sierra";
-                descripcion = "Ají de gallina, papa a la huancaína, rocoto relleno, guisos y papas andinas.";
-            } else {
-                region = "Selva";
-                descripcion = "Tacacho con cecina, juane, platos con plátano y sabores exóticos de la Amazonía.";
-            }
-            tooltip.innerHTML = `<strong>${region}</strong>`;
-            tooltip.style.display = "block";
-            tooltip.style.left = (e.offsetX + 10) + "px";
-            tooltip.style.top = (e.offsetY + 10) + "px";
-            descRegion.innerHTML = `<strong>${region}:</strong> ${descripcion}`;
-        });
-        mapa.addEventListener('mouseleave', function() {
-            tooltip.style.display = "none";
-            descRegion.innerHTML = "Pasa el mouse sobre el mapa para descubrir la región de cada plato.";
-        });
-    }
-
-    // Preguntas Frecuentes: filtros rápidos y buscador funcional
-    // (Reinserta los botones de filtro si no existen)
-    if (!document.getElementById('faq-filtros')) {
-        const faqFiltros = [
-            { label: "Pedidos", keywords: ["pedido", "pedidos", "haz tu pedido"] },
-            { label: "Envíos", keywords: ["envío", "delivery", "domicilio"] },
-            { label: "Pagos", keywords: ["pago", "pagos", "mercado pago", "efectivo", "transferencia"] },
-            { label: "Fidelidad", keywords: ["fidelidad", "sello", "vianda gratis"] },
-            { label: "Alergias", keywords: ["alergia", "alergias", "ingredientes"] }
-        ];
-        const filtroFaqContainer = document.createElement('div');
-        filtroFaqContainer.id = 'faq-filtros';
-        filtroFaqContainer.style.display = 'flex';
-        filtroFaqContainer.style.flexWrap = 'wrap';
-        filtroFaqContainer.style.gap = '0.5em';
-        filtroFaqContainer.style.justifyContent = 'center';
-        faqFiltros.forEach(f => {
-            const btn = document.createElement('button');
-            btn.type = 'button';
-            btn.innerText = f.label;
-            btn.style.background = '#ffd600';
-            btn.style.color = '#b71c1c';
-            btn.style.border = 'none';
-            btn.style.borderRadius = '8px';
-            btn.style.padding = '0.4em 1em';
-            btn.style.cursor = 'pointer';
-            btn.onclick = () => {
-                document.getElementById('faq-search').value = f.keywords[0];
-                const faqPreguntas = Array.from(document.querySelectorAll('#faq-modal .faq-item'));
-                faqPreguntas.forEach(item => {
-                    item.style.display = f.keywords.some(k => item.innerText.toLowerCase().includes(k)) ? '' : 'none';
-                });
-            };
-            filtroFaqContainer.appendChild(btn);
-        });
-        const faqSearch = document.getElementById('faq-search');
-        faqSearch.parentNode.insertBefore(filtroFaqContainer, faqSearch.nextSibling);
-    }
-    document.getElementById('faq-search').oninput = function() {
-        const val = this.value.toLowerCase();
-        const faqPreguntas = Array.from(document.querySelectorAll('#faq-modal .faq-item'));
-        faqPreguntas.forEach(item => {
-            item.style.display = item.innerText.toLowerCase().includes(val) ? '' : 'none';
-        });
-    };
-
-    // Service Worker para PWA
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js');
-    }
-
-    // Carrusel funcional (2 imágenes visibles, avance de 2 en 2, bucle)
-    (function() {
-        const track = document.getElementById('carousel-track');
-        const images = track.querySelectorAll('img');
-        const prevBtn = document.getElementById('carousel-prev');
-        const nextBtn = document.getElementById('carousel-next');
-        let current = 0;
-        const visible = 2;
-        function updateCarousel() {
-            const total = images.length;
-            let offset = (current * 50); // 50% por imagen
-            track.style.transform = `translateX(-${offset}%)`;
-        }
-        prevBtn.onclick = function() {
-            const total = images.length;
-            current = (current - visible + total) % total;
-            updateCarousel();
-        };
-        nextBtn.onclick = function() {
-            const total = images.length;
-            current = (current + visible) % total;
-            updateCarousel();
-        };
-        // Responsive: si hay menos de 2 imágenes, oculta botones
-        if (images.length <= 2) {
-            prevBtn.style.display = 'none';
-            nextBtn.style.display = 'none';
-        }
-        // Auto-avance cada 6s
-        setInterval(() => {
-            nextBtn.click();
-        }, 6000);
-        updateCarousel();
-    })();
-
-    // 1. Carrito de pedidos
-    let carrito = [];
-    function actualizarCarrito() {
-        const lista = document.getElementById('carrito-lista');
-        lista.innerHTML = '';
-        let total = 0;
-        carrito.forEach((item, i) => {
-            total += item.precio;
-            const li = document.createElement('li');
-            li.innerHTML = `${item.nombre} <span>$${item.precio.toLocaleString()}</span> <button onclick="carritoEliminar(${i})" style="background:none;border:none;color:#b71c1c;cursor:pointer;">✖</button>`;
-            lista.appendChild(li);
-        });
-        document.getElementById('carrito-total').innerText = 'Total: $' + total.toLocaleString();
-    }
-    function carritoEliminar(idx) {
-        carrito.splice(idx, 1);
-        actualizarCarrito();
-    }
-    document.querySelectorAll('.pedido-btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.preventDefault();
-            let card = btn.closest('.plato-card');
-            let nombre = card.querySelector('h3').innerText;
-            let precio = parseInt(card.querySelector('.precio').innerText.replace(/\D/g, ''));
-            carrito.push({nombre, precio});
-            actualizarCarrito();
-            card.classList.add('pedido-ok');
-            setTimeout(() => card.classList.remove('pedido-ok'), 1200);
-            // No abrir WhatsApp, solo agregar al carrito
-            document.getElementById('carrito-modal').style.display = 'flex';
-        });
-    });
-    document.getElementById('carrito-toggle-btn').onclick = function() {
-        document.getElementById('carrito-modal').style.display = 'flex';
-        actualizarCarrito();
-    };
-    document.getElementById('carrito-vaciar').onclick = function() {
-        carrito = [];
-        actualizarCarrito();
-    };
-    document.getElementById('carrito-enviar').onclick = function() {
-        if (carrito.length === 0) return alert('El carrito está vacío.');
-        alert('¡Pedido enviado! Nos contactaremos por WhatsApp.');
-        carrito = [];
-        actualizarCarrito();
-        document.getElementById('carrito-modal').style.display = 'none';
-    };
-
-    // 2. Notificaciones push (simulado)
-    document.getElementById('push-btn').onclick = function() {
-        alert('¡Notificaciones activadas! Te avisaremos de nuevas promos.');
-    };
-
-    // 6. Valoraciones y comentarios
-    let valoraciones = [];
-    document.getElementById('enviar-valoracion').onclick = function() {
-        const val = document.getElementById('valoracion-select').value;
-        const com = document.getElementById('comentario-input').value.trim();
-        if (!val) return alert('Selecciona una calificación.');
-        valoraciones.push({val, com});
-        mostrarValoraciones();
-        document.getElementById('valoracion-select').value = '';
-        document.getElementById('comentario-input').value = '';
-    };
-    function mostrarValoraciones() {
-        const lista = document.getElementById('valoraciones-lista');
-        lista.innerHTML = '';
-        valoraciones.slice(-5).reverse().forEach(v => {
-            const div = document.createElement('div');
-            div.className = 'comentario';
-            div.innerHTML = `<span>${'⭐'.repeat(v.val)}</span> ${v.com}`;
-            lista.appendChild(div);
-        });
-    }
-
-    // 7. Filtro de platos
-    document.getElementById('filtro-region').onchange =
-    document.getElementById('filtro-tipo').onchange =
-    document.getElementById('filtro-busqueda').oninput = function() {
-        const region = document.getElementById('filtro-region').value.toLowerCase();
-        const tipo = document.getElementById('filtro-tipo').value.toLowerCase();
-        const busq = document.getElementById('filtro-busqueda').value.toLowerCase();
-        document.querySelectorAll('.plato-card').forEach(card => {
-            let nombre = card.querySelector('h3').innerText.toLowerCase();
-            let show = true;
-            if (region && !card.innerHTML.toLowerCase().includes(region)) show = false;
-            if (tipo && !card.innerHTML.toLowerCase().includes(tipo)) show = false;
-            if (busq && !nombre.includes(busq)) show = false;
-            card.style.display = show ? '' : 'none';
-        });
-    };
-
-    // 8. Accesibilidad: foco visible (ya en CSS)
-
-    // 10. Animaciones suaves (ya en CSS)
-
-    // 11. Preguntas frecuentes dinámicas (buscador)
-    const faqPreguntas = Array.from(document.querySelectorAll('#faq-modal .faq-item'));
-    document.getElementById('faq-search').oninput = function() {
-        const val = this.value.toLowerCase();
-        faqPreguntas.forEach(item => {
-            item.style.display = item.innerText.toLowerCase().includes(val) ? '' : 'none';
-        });
-    };
-
-    // 12. Soporte para cupones
-    document.getElementById('cupon-aplicar').onclick = function() {
-        const cupon = document.getElementById('cupon-input').value.trim().toUpperCase();
-        let msg = '';
-        if (cupon === 'PERU10') {
-            msg = '¡Cupón aplicado! 10% de descuento en tu pedido.';
-            // Aplica descuento visual (no real, demo)
-            let total = carrito.reduce((acc, item) => acc + item.precio, 0);
-            total = Math.round(total * 0.9);
-            document.getElementById('carrito-total').innerText = 'Total: $' + total.toLocaleString();
-        } else if (cupon) {
-            msg = 'Cupón no válido.';
-        }
-        document.getElementById('cupon-msg').innerText = msg;
-    };
-
-    // 14. Chat de soporte (simulado)
-    document.getElementById('chat-toggle-btn').onclick = function() {
-        document.getElementById('chat-soporte').style.display = 'flex';
-    };
-    document.getElementById('chat-enviar').onclick = function() {
-        const input = document.getElementById('chat-input');
-        const msg = input.value.trim();
-        if (!msg) return;
-        const chat = document.getElementById('chat-mensajes');
-        const div = document.createElement('div');
-        div.innerHTML = `<b>Tú:</b> ${msg}`;
-        chat.appendChild(div);
-        input.value = '';
-        setTimeout(() => {
-            const bot = document.createElement('div');
-            bot.innerHTML = `<b>Soporte:</b> ¡Gracias por tu mensaje! Te responderemos pronto.`;
-            chat.appendChild(bot);
-            chat.scrollTop = chat.scrollHeight;
-        }, 800);
-    };
-
-    // 15. Modo offline (aviso)
-    window.addEventListener('offline', () => {
-        document.getElementById('offline-aviso').style.display = 'block';
-    });
-    window.addEventListener('online', () => {
-        document.getElementById('offline-aviso').style.display = 'none';
-    });
-
-    // Botón modo nocturno (corregido)
-    document.getElementById('modo-nocturno-btn').addEventListener('click', function() {
-        document.body.classList.toggle('modo-nocturno');
-        // Guarda preferencia en localStorage
-        if (document.body.classList.contains('modo-nocturno')) {
-            localStorage.setItem('modoNocturno', '1');
-        } else {
-            localStorage.removeItem('modoNocturno');
-        }
-    });
-    // Aplica modo nocturno si estaba guardado
-    if (localStorage.getItem('modoNocturno') === '1') {
-        document.body.classList.add('modo-nocturno');
-    }
-    </script>
+    <script src="main.js" defer></script>
 </body>
 </html>

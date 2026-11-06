@@ -1,291 +1,519 @@
-// Carrusel: muestra 2 imágenes a la vez, avanza de 2 en 2 cada 5 segundos y botones funcionan
-(function() {
-    const track = document.getElementById('carousel-track');
-    if (!track) return;
-    const images = track.querySelectorAll('img');
-    const prevBtn = document.getElementById('carousel-prev');
-    const nextBtn = document.getElementById('carousel-next');
-    let current = 0;
-    const visible = 2;
-    function updateCarousel() {
-        let offset = (current * 50); // 50% por imagen
-        track.style.transform = `translateX(-${offset}%)`;
-    }
-    function next() {
-        current = (current + visible) % images.length;
-        updateCarousel();
-    }
-    function prev() {
-        current = (current - visible + images.length) % images.length;
-        updateCarousel();
-    }
-    if (nextBtn) nextBtn.onclick = next;
-    if (prevBtn) prevBtn.onclick = prev;
-    setInterval(next, 5000);
-    updateCarousel();
-})();
+(() => {
+    'use strict';
 
-// Formulario de contacto (simulado)
-document.getElementById('contact-form').onsubmit = function(e) {
-    e.preventDefault();
-    alert('¡Gracias por contactarnos! Te responderemos pronto.');
-    this.reset();
-};
+    const $ = (selector, root = document) => root.querySelector(selector);
+    const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
 
-// Vale de descuento
-document.getElementById('vale-descuento-btn').onclick = function() {
-    alert('¡Felicidades! Usa el código PERUSABOR para 10% de descuento en tu primer pedido.');
-};
+    const COSTO_ENVIO = 2000;
 
-// Botón de pedido rápido
-document.querySelectorAll('.pedido-btn').forEach(btn => {
-    btn.onclick = () => {
-        window.open('https://wa.me/51999999999?text=¡Quiero%20hacer%20un%20pedido%20de%20comida%20peruana!', '_blank');
+    const CLAVES = {
+        tema: 'sabor-tema',
+        carrito: 'sabor-carrito-v1'
     };
-});
 
-// Botón modo nocturno (funciona correctamente y solo uno)
-document.getElementById('modo-nocturno-btn').addEventListener('click', function() {
-    document.body.classList.toggle('modo-nocturno');
-    if (document.body.classList.contains('modo-nocturno')) {
-        localStorage.setItem('modoNocturno', '1');
-    } else {
-        localStorage.removeItem('modoNocturno');
-    }
-});
-if (localStorage.getItem('modoNocturno') === '1') {
-    document.body.classList.add('modo-nocturno');
-}
+    const enlaceWhatsApp = $('.whatsapp-flotante');
+    const numeroWhatsApp = enlaceWhatsApp?.href.match(/wa\.me\/(\d+)/)?.[1] || '542235023826';
 
-// Carrusel de platos en móviles: muestra 1 plato a la vez, avanza cada 15s y flechas para navegar
-(function() {
-    function isMobile() {
-        return window.innerWidth <= 700;
-    }
-    const platosGrid = document.querySelector('.platos-grid');
-    if (!platosGrid) return;
-    let platos = Array.from(platosGrid.children);
-    let current = 0;
-    let intervalId = null;
+    const formatearPrecio = (valor) => `$${Math.round(Number(valor) || 0).toLocaleString('es-AR')}`;
 
-    // Crea flechas si no existen
-    let prevBtn = document.getElementById('plato-carrusel-prev');
-    let nextBtn = document.getElementById('plato-carrusel-next');
-    if (!prevBtn) {
-        prevBtn = document.createElement('button');
-        prevBtn.id = 'plato-carrusel-prev';
-        prevBtn.innerHTML = '&#10094;';
-        prevBtn.setAttribute('aria-label', 'Anterior plato');
-        prevBtn.style.position = 'absolute';
-        prevBtn.style.left = '8px';
-        prevBtn.style.top = '50%';
-        prevBtn.style.transform = 'translateY(-50%)';
-        prevBtn.style.background = '#ffd600';
-        prevBtn.style.color = '#b71c1c';
-        prevBtn.style.border = 'none';
-        prevBtn.style.borderRadius = '50%';
-        prevBtn.style.width = '36px';
-        prevBtn.style.height = '36px';
-        prevBtn.style.fontSize = '1.7em';
-        prevBtn.style.zIndex = '10';
-        prevBtn.style.display = 'none';
-        prevBtn.style.boxShadow = '0 2px 8px rgba(0,0,0,0.10)';
-        platosGrid.parentNode.style.position = 'relative';
-        platosGrid.parentNode.appendChild(prevBtn);
-    }
-    if (!nextBtn) {
-        nextBtn = document.createElement('button');
-        nextBtn.id = 'plato-carrusel-next';
-        nextBtn.innerHTML = '&#10095;';
-        nextBtn.setAttribute('aria-label', 'Siguiente plato');
-        nextBtn.style.position = 'absolute';
-        nextBtn.style.right = '8px';
-        nextBtn.style.top = '50%';
-        nextBtn.style.transform = 'translateY(-50%)';
-        nextBtn.style.background = '#ffd600';
-        nextBtn.style.color = '#b71c1c';
-        nextBtn.style.border = 'none';
-        nextBtn.style.borderRadius = '50%';
-        nextBtn.style.width = '36px';
-        nextBtn.style.height = '36px';
-        nextBtn.style.fontSize = '1.7em';
-        nextBtn.style.zIndex = '10';
-        nextBtn.style.display = 'none';
-        nextBtn.style.boxShadow = '0 2px 8px rgba(0,0,0,0.10)';
-        platosGrid.parentNode.style.position = 'relative';
-        platosGrid.parentNode.appendChild(nextBtn);
-    }
+    const leerAlmacen = (clave, alternativo) => {
+        try {
+            const dato = localStorage.getItem(clave);
+            return dato ? JSON.parse(dato) : alternativo;
+        } catch {
+            return alternativo;
+        }
+    };
 
-    function showPlato(idx) {
-        platos.forEach((card, i) => {
-            card.style.display = (i === idx) ? '' : 'none';
+    const guardarAlmacen = (clave, valor) => {
+        try {
+            localStorage.setItem(clave, JSON.stringify(valor));
+        } catch {
+            /* Sin almacenamiento disponible. */
+        }
+    };
+
+    const normalizar = (texto) => texto
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase();
+
+    const abrirWhatsApp = (texto) => {
+        const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(texto)}`;
+        const enlace = document.createElement('a');
+        enlace.href = url;
+        enlace.target = '_blank';
+        enlace.rel = 'noopener noreferrer';
+        document.body.appendChild(enlace);
+        enlace.click();
+        enlace.remove();
+    };
+
+    const cerrarAlHacerClicFuera = (dialogo) => {
+        dialogo.addEventListener('click', (evento) => {
+            if (evento.target !== dialogo) return;
+            const rect = dialogo.getBoundingClientRect();
+            const fuera = evento.clientX < rect.left
+                || evento.clientX > rect.right
+                || evento.clientY < rect.top
+                || evento.clientY > rect.bottom;
+            if (fuera) dialogo.close();
         });
-    }
-
-    function startPlatoCarrusel() {
-        if (intervalId) clearInterval(intervalId);
-        showPlato(current);
-        prevBtn.style.display = 'block';
-        nextBtn.style.display = 'block';
-        intervalId = setInterval(() => {
-            current = (current + 1) % platos.length;
-            showPlato(current);
-        }, 15000);
-    }
-
-    function stopPlatoCarrusel() {
-        if (intervalId) clearInterval(intervalId);
-        platos.forEach(card => card.style.display = '');
-        prevBtn.style.display = 'none';
-        nextBtn.style.display = 'none';
-    }
-
-    function handleResize() {
-        if (isMobile()) {
-            startPlatoCarrusel();
-        } else {
-            stopPlatoCarrusel();
-        }
-    }
-
-    prevBtn.onclick = function(e) {
-        e.stopPropagation();
-        current = (current - 1 + platos.length) % platos.length;
-        showPlato(current);
-    };
-    nextBtn.onclick = function(e) {
-        e.stopPropagation();
-        current = (current + 1) % platos.length;
-        showPlato(current);
     };
 
-    window.addEventListener('resize', handleResize);
-    handleResize();
-})();
+    const iniciarTema = () => {
+        const boton = $('#tema-btn');
+        if (!boton) return;
 
-// Botón "¿Qué plato peruano eres?" funcional y con más opciones (sin vegetariano ni arroz)
-(function() {
-    const testBtn = document.getElementById('test-plato-btn');
-    if (!testBtn) return;
-    const testModal = document.getElementById('test-modal');
-    const testContent = document.getElementById('test-content');
-    const testResultado = document.getElementById('test-resultado');
+        const aplicar = (tema, persistir = true) => {
+            document.documentElement.dataset.theme = tema;
+            boton.textContent = tema === 'oscuro' ? '☀️' : '🌙';
+            boton.setAttribute('aria-pressed', String(tema === 'oscuro'));
+            boton.setAttribute('aria-label', tema === 'oscuro' ? 'Activar modo claro' : 'Activar modo oscuro');
 
-    // Opciones ampliadas (sin vegetariano ni arroz)
-    const preguntas = [
-        {
-            texto: "¿Prefieres algo fresco, caliente o picante?",
-            opciones: [
-                { label: "Fresco", plato: "Ceviche" },
-                { label: "Caliente", plato: "Lomo Saltado" },
-                { label: "Picante", plato: "Ají de Gallina" }
-            ]
-        },
-        {
-            texto: "¿Te gusta la papa, el pescado o el pollo?",
-            opciones: [
-                { label: "Papa", plato: "Papa a la Huancaína" },
-                { label: "Pescado", plato: "Ceviche" },
-                { label: "Pollo", plato: "Ají de Gallina" }
-            ]
-        }
-    ];
+            const meta = $('meta[name="theme-color"]');
+            if (meta) meta.setAttribute('content', tema === 'oscuro' ? '#211a16' : '#b71c1c');
 
-    let preguntaActual = 0;
-    let respuestas = [];
-
-    function mostrarPregunta(idx) {
-        const p = preguntas[idx];
-        testResultado.innerText = '';
-        testContent.innerHTML = `<p>${p.texto}</p>`;
-        p.opciones.forEach(op => {
-            const btn = document.createElement('button');
-            btn.textContent = op.label;
-            btn.style.margin = '0.5em';
-            btn.onclick = function() {
-                respuestas.push(op.plato);
-                if (preguntaActual + 1 < preguntas.length) {
-                    preguntaActual++;
-                    mostrarPregunta(preguntaActual);
-                } else {
-                    mostrarResultado();
+            if (persistir) {
+                try {
+                    localStorage.setItem(CLAVES.tema, tema);
+                } catch {
+                    /* Sin almacenamiento disponible. */
                 }
-            };
-            testContent.appendChild(btn);
-        });
-    }
-
-    function mostrarResultado() {
-        // Elige el plato más frecuente en las respuestas
-        const counts = {};
-        respuestas.forEach(p => counts[p] = (counts[p] || 0) + 1);
-        let plato = respuestas[0];
-        let max = 0;
-        for (const k in counts) {
-            if (counts[k] > max) {
-                max = counts[k];
-                plato = k;
             }
-        }
-        testContent.innerHTML = '';
-        testResultado.innerText = `¡Eres ${plato}! Te recomendamos pedirlo hoy.`;
-    }
+        };
 
-    testBtn.onclick = function() {
-        preguntaActual = 0;
-        respuestas = [];
-        testModal.style.display = 'flex';
-        mostrarPregunta(0);
+        let guardado = null;
+        try {
+            guardado = localStorage.getItem(CLAVES.tema);
+        } catch {
+            /* Sin almacenamiento disponible. */
+        }
+
+        const prefiereOscuro = window.matchMedia?.('(prefers-color-scheme: dark)').matches;
+        aplicar(guardado === 'oscuro' || (!guardado && prefiereOscuro), false);
+
+        boton.addEventListener('click', () => {
+            const siguiente = document.documentElement.dataset.theme === 'oscuro' ? 'claro' : 'oscuro';
+            aplicar(siguiente);
+        });
     };
-    // El botón cerrar ya existe en el HTML y funciona
-})();
 
-// Mapa interactivo funcional: muestra región y comidas típicas al pasar el cursor
-(function() {
-    const mapa = document.getElementById('mapa-peru-img');
-    const tooltip = document.getElementById('tooltip-mapa');
-    const descRegion = document.getElementById('desc-region');
-    if (!mapa || !tooltip || !descRegion) return;
+    const iniciarCarrito = () => {
+        const dialogo = $('#carrito-dialog');
+        const lista = $('#carrito-lista');
+        const vacio = $('#carrito-vacio');
+        const total = $('#carrito-total');
+        const contador = $('#carrito-contador');
+        const abrir = $('#carrito-abrir');
+        const aviso = $('#carrito-msg');
+        const formulario = $('#pedido-form');
+        const campoNombre = $('#pedido-nombre');
+        const campoDireccion = $('#pedido-direccion');
+        const campoHorario = $('#pedido-horario');
+        const campoPago = $('#pedido-pago');
+        if (!dialogo || !lista || !total) return;
 
-    const regiones = [
-        {
-            nombre: "Costa",
-            color: "#ff9800",
-            comidas: "Ceviche, arroz con mariscos, tiraditos y pescados frescos."
-        },
-        {
-            nombre: "Sierra",
-            color: "#ffd600",
-            comidas: "Ají de gallina, papa a la huancaína, rocoto relleno, guisos y papas andinas."
-        },
-        {
-            nombre: "Selva",
-            color: "#d32f2f",
-            comidas: "Tacacho con cecina, juane, platos con plátano y sabores exóticos de la Amazonía."
-        }
-    ];
+        let carrito = leerAlmacen(CLAVES.carrito, []);
+        if (!Array.isArray(carrito)) carrito = [];
+        carrito = carrito
+            .filter((item) => item && typeof item.nombre === 'string' && Number.isFinite(Number(item.precio)) && Number(item.cantidad) > 0)
+            .map((item) => ({
+                nombre: item.nombre,
+                precio: Number(item.precio),
+                cantidad: Math.floor(Number(item.cantidad))
+            }));
 
-    mapa.addEventListener('mousemove', function(e) {
-        const rect = mapa.getBoundingClientRect();
-        const x = (e.clientX - rect.left) / rect.width;
-        const y = (e.clientY - rect.top) / rect.height;
-        let region = regiones[0]; // Costa por defecto
+        const guardar = () => guardarAlmacen(CLAVES.carrito, carrito);
 
-        if (x > 0.68 || (x > 0.58 && y < 0.35)) {
-            region = regiones[2]; // Selva
-        } else if (x >= 0.45 && x <= 0.68) {
-            region = regiones[1]; // Sierra
-        }
+        const calcularTotales = () => {
+            const subtotal = carrito.reduce((acumulado, item) => acumulado + item.precio * item.cantidad, 0);
+            const envio = carrito.length > 0 ? COSTO_ENVIO : 0;
+            return { subtotal, envio, total: subtotal + envio };
+        };
 
-        tooltip.innerHTML = `<strong style="color:${region.color}">${region.nombre}</strong><br><span style="font-size:0.97em">${region.comidas}</span>`;
-        tooltip.style.display = "block";
-        tooltip.style.left = (e.clientX - rect.left + 10) + "px";
-        tooltip.style.top = (e.clientY - rect.top + 10) + "px";
-        descRegion.innerHTML = `<strong style="color:${region.color}">${region.nombre}:</strong> ${region.comidas}`;
-    });
+        const actualizarContador = () => {
+            const unidades = carrito.reduce((acumulado, item) => acumulado + item.cantidad, 0);
+            if (contador) contador.textContent = String(unidades);
+            if (abrir) {
+                abrir.setAttribute('aria-label', `Abrir carrito, ${unidades} ${unidades === 1 ? 'plato' : 'platos'}`);
+            }
+        };
 
-    mapa.addEventListener('mouseleave', function() {
-        tooltip.style.display = "none";
-        descRegion.innerHTML = "Pasa el mouse sobre el mapa para descubrir la región de cada plato.";
-    });
+        const renderizar = () => {
+            lista.replaceChildren();
+
+            carrito.forEach((item, indice) => {
+                const fila = document.createElement('li');
+                const nombre = document.createElement('span');
+                nombre.textContent = `${item.cantidad} × ${item.nombre}`;
+
+                const precio = document.createElement('span');
+                precio.textContent = formatearPrecio(item.precio * item.cantidad);
+
+                const quitar = document.createElement('button');
+                quitar.type = 'button';
+                quitar.className = 'quitar';
+                quitar.dataset.indice = String(indice);
+                quitar.textContent = 'Quitar';
+                quitar.setAttribute('aria-label', `Quitar ${item.nombre} del carrito`);
+
+                fila.append(nombre, precio, quitar);
+                lista.appendChild(fila);
+            });
+
+            if (vacio) vacio.hidden = carrito.length > 0;
+
+            const { subtotal, envio, total: totalFinal } = calcularTotales();
+            if (carrito.length === 0) {
+                total.textContent = 'Total: $0';
+            } else {
+                total.innerHTML = `Subtotal: ${formatearPrecio(subtotal)}<br>Envío: ${formatearPrecio(envio)}<br>Total: ${formatearPrecio(totalFinal)}`;
+            }
+
+            actualizarContador();
+        };
+
+        const avisar = (texto) => {
+            if (aviso) aviso.textContent = texto;
+        };
+
+        const agregar = (nombre, precio) => {
+            const existente = carrito.find((item) => item.nombre === nombre && item.precio === precio);
+            if (existente) {
+                existente.cantidad += 1;
+            } else {
+                carrito.push({ nombre, precio, cantidad: 1 });
+            }
+            guardar();
+            renderizar();
+            avisar('');
+        };
+
+        const vaciar = () => {
+            carrito = [];
+            guardar();
+            renderizar();
+            avisar('');
+        };
+
+        const abrirDialogo = () => {
+            renderizar();
+            if (typeof dialogo.showModal === 'function') {
+                if (!dialogo.open) dialogo.showModal();
+            } else {
+                dialogo.setAttribute('open', '');
+            }
+        };
+
+        const enviarPedido = () => {
+            if (carrito.length === 0) {
+                avisar('Agregá al menos un plato para armar el pedido.');
+                return;
+            }
+
+            const datos = {
+                nombre: campoNombre?.value.trim() || '',
+                direccion: campoDireccion?.value.trim() || '',
+                horario: campoHorario?.value.trim() || '',
+                pago: campoPago?.value.trim() || ''
+            };
+
+            const faltante = [
+                { valor: datos.nombre, campo: campoNombre, etiqueta: 'tu nombre' },
+                { valor: datos.direccion, campo: campoDireccion, etiqueta: 'la zona y dirección' },
+                { valor: datos.horario, campo: campoHorario, etiqueta: 'el horario' },
+                { valor: datos.pago, campo: campoPago, etiqueta: 'la forma de pago' }
+            ].find((dato) => !dato.valor);
+
+            if (faltante) {
+                avisar(`Completá ${faltante.etiqueta} para enviar el pedido.`);
+                faltante.campo?.focus();
+                return;
+            }
+
+            const { subtotal, envio, total: totalFinal } = calcularTotales();
+            const lineas = [
+                'Hola Sabor del Norte, quiero hacer este pedido:',
+                '',
+                ...carrito.map((item) => `• ${item.cantidad} × ${item.nombre} — ${formatearPrecio(item.precio * item.cantidad)}`),
+                '',
+                `Subtotal: ${formatearPrecio(subtotal)}`,
+                `Envío: ${formatearPrecio(envio)}`,
+                `Total: ${formatearPrecio(totalFinal)}`,
+                '',
+                `Nombre: ${datos.nombre}`,
+                `Zona/dirección: ${datos.direccion}`,
+                `Horario preferido: ${datos.horario}`,
+                `Forma de pago: ${datos.pago}`
+            ];
+
+            abrirWhatsApp(lineas.join('\n'));
+            avisar('Se abrió WhatsApp con el resumen. Enviá el mensaje para confirmar el pedido.');
+        };
+
+        document.addEventListener('click', (evento) => {
+            const agregarBoton = evento.target.closest('.agregar');
+            if (agregarBoton) {
+                evento.preventDefault();
+                const nombre = agregarBoton.dataset.nombre?.trim();
+                const precio = Number(agregarBoton.dataset.precio);
+                if (!nombre || !Number.isFinite(precio) || precio <= 0) return;
+
+                agregar(nombre, precio);
+
+                const textoOriginal = agregarBoton.textContent;
+                agregarBoton.textContent = 'Agregado';
+                agregarBoton.disabled = true;
+                window.setTimeout(() => {
+                    agregarBoton.textContent = textoOriginal;
+                    agregarBoton.disabled = false;
+                }, 800);
+                return;
+            }
+
+            const quitarBoton = evento.target.closest('.quitar');
+            if (!quitarBoton || !lista.contains(quitarBoton)) return;
+
+            const indice = Number(quitarBoton.dataset.indice);
+            if (!Number.isInteger(indice) || indice < 0 || indice >= carrito.length) return;
+
+            carrito.splice(indice, 1);
+            guardar();
+            renderizar();
+            avisar('');
+        });
+
+        abrir?.addEventListener('click', abrirDialogo);
+
+        $$('[data-cerrar]', dialogo).forEach((boton) => {
+            boton.addEventListener('click', () => dialogo.close());
+        });
+        cerrarAlHacerClicFuera(dialogo);
+
+        $('#carrito-vaciar')?.addEventListener('click', vaciar);
+        formulario?.addEventListener('submit', (evento) => {
+            evento.preventDefault();
+            enviarPedido();
+        });
+
+        renderizar();
+    };
+
+    const iniciarCarrusel = () => {
+        const pista = $('#carrusel-pista');
+        if (!pista) return;
+
+        const diapositivas = $$('.carrusel-slide', pista);
+        if (!diapositivas.length) return;
+
+        const anterior = $('#carrusel-prev');
+        const siguiente = $('#carrusel-next');
+        const contador = $('#carrusel-contador');
+        const puntos = $('#carrusel-puntos');
+        const botonesPunto = [];
+        let indiceActual = 0;
+        let temporizadorDesplazamiento = 0;
+
+        const comportamiento = () => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+
+        const maximoDesplazamiento = () => Math.max(0, pista.scrollWidth - pista.clientWidth);
+
+        const centrar = (diapositiva) => {
+            const pistaRect = pista.getBoundingClientRect();
+            const diapositivaRect = diapositiva.getBoundingClientRect();
+            const destino = pista.scrollLeft
+                + (diapositivaRect.left - pistaRect.left)
+                - (pista.clientWidth - diapositivaRect.width) / 2;
+            pista.scrollTo({
+                left: Math.max(0, Math.min(maximoDesplazamiento(), destino)),
+                behavior: comportamiento()
+            });
+        };
+
+        const calcularIndice = () => {
+            const maximo = maximoDesplazamiento();
+            const pistaRect = pista.getBoundingClientRect();
+            const centro = pista.clientWidth / 2;
+            let indice = 0;
+            let distanciaMinima = Infinity;
+
+            diapositivas.forEach((diapositiva, posicion) => {
+                const rect = diapositiva.getBoundingClientRect();
+                const posicionContenido = rect.left - pistaRect.left + pista.scrollLeft;
+                const objetivo = Math.max(0, Math.min(maximo, posicionContenido + rect.width / 2 - centro));
+                const distancia = Math.abs(pista.scrollLeft - objetivo);
+                if (distancia < distanciaMinima) {
+                    distanciaMinima = distancia;
+                    indice = posicion;
+                }
+            });
+
+            return indice;
+        };
+
+        const actualizarFlechas = (indice) => {
+            if (anterior) anterior.disabled = indice <= 0;
+            if (siguiente) siguiente.disabled = indice >= diapositivas.length - 1;
+        };
+
+        const pintarIndice = (indice) => {
+            indiceActual = indice;
+            if (contador) contador.textContent = `${indiceActual + 1} / ${diapositivas.length}`;
+            actualizarFlechas(indiceActual);
+
+            botonesPunto.forEach((boton, posicion) => {
+                if (posicion === indiceActual) {
+                    boton.setAttribute('aria-current', 'true');
+                } else {
+                    boton.removeAttribute('aria-current');
+                }
+            });
+        };
+
+        const actualizarEstado = () => {
+            pintarIndice(calcularIndice());
+        };
+
+        const desplazar = (direccion) => {
+            const destino = Math.max(0, Math.min(diapositivas.length - 1, indiceActual + direccion));
+            pintarIndice(destino);
+            centrar(diapositivas[destino]);
+        };
+
+        const crearPuntos = () => {
+            if (!puntos) return;
+            puntos.replaceChildren();
+            botonesPunto.length = 0;
+
+            diapositivas.forEach((diapositiva, indice) => {
+                const titulo = diapositiva.querySelector('h3')?.textContent.trim() || `Plato ${indice + 1}`;
+                const boton = document.createElement('button');
+                boton.type = 'button';
+                boton.className = 'carrusel-punto';
+                boton.setAttribute('aria-label', `Ir a ${titulo}`);
+                boton.addEventListener('click', () => {
+                    pintarIndice(indice);
+                    centrar(diapositiva);
+                });
+                puntos.appendChild(boton);
+                botonesPunto.push(boton);
+            });
+        };
+
+        const alDesplazar = () => {
+            window.clearTimeout(temporizadorDesplazamiento);
+            temporizadorDesplazamiento = window.setTimeout(() => pintarIndice(calcularIndice()), 120);
+        };
+
+        anterior?.addEventListener('click', () => desplazar(-1));
+        siguiente?.addEventListener('click', () => desplazar(1));
+
+        pista.addEventListener('keydown', (evento) => {
+            if (evento.key === 'ArrowLeft') {
+                evento.preventDefault();
+                desplazar(-1);
+            }
+            if (evento.key === 'ArrowRight') {
+                evento.preventDefault();
+                desplazar(1);
+            }
+        });
+
+        pista.addEventListener('scroll', alDesplazar, { passive: true });
+        window.addEventListener('resize', actualizarEstado);
+        window.addEventListener('load', actualizarEstado, { once: true });
+
+        crearPuntos();
+        actualizarEstado();
+    };
+
+    const iniciarPreguntas = () => {
+        const buscador = $('#faq-buscar');
+        const lista = $('#faq-lista');
+        const vacio = $('#faq-vacio');
+        if (!buscador || !lista) return;
+
+        const preguntas = $$('.faq-item', lista);
+
+        const filtrar = () => {
+            const consulta = normalizar(buscador.value.trim());
+            let visibles = 0;
+            preguntas.forEach((pregunta) => {
+                const coincide = !consulta || normalizar(pregunta.textContent).includes(consulta);
+                pregunta.hidden = !coincide;
+                if (coincide) visibles += 1;
+            });
+            if (vacio) vacio.hidden = visibles > 0 || !consulta;
+        };
+
+        buscador.addEventListener('input', filtrar);
+    };
+
+    const iniciarContacto = () => {
+        const formulario = $('#contact-form');
+        if (!formulario) return;
+
+        const estado = $('#form-estado');
+        const nombre = $('#contacto-nombre');
+        const email = $('#contacto-email');
+        const mensaje = $('#contacto-mensaje');
+
+        formulario.addEventListener('submit', (evento) => {
+            evento.preventDefault();
+
+            const nombreValor = nombre?.value.trim() || '';
+            const emailValor = email?.value.trim() || '';
+            const mensajeValor = mensaje?.value.trim() || '';
+            const emailValido = email ? email.checkValidity() : false;
+
+            if (!nombreValor || !emailValor || !mensajeValor || !emailValido) {
+                if (estado) estado.textContent = 'Completá nombre, un correo válido y mensaje.';
+                const primerInvalido = [nombre, email, mensaje].find((campo) => {
+                    if (!campo) return false;
+                    if (campo.type === 'email') return !campo.value.trim() || !campo.checkValidity();
+                    return !campo.value.trim();
+                });
+                primerInvalido?.focus();
+                return;
+            }
+
+            abrirWhatsApp(`Hola Sabor del Norte, soy ${nombreValor} (${emailValor}).\n\n${mensajeValor}`);
+            if (estado) estado.textContent = 'Se abrió WhatsApp con tu mensaje. Enviá el mensaje para contactarnos.';
+        });
+    };
+
+    const iniciarConexion = () => {
+        const aviso = $('#offline-aviso');
+        if (!aviso) return;
+
+        const actualizar = () => {
+            aviso.hidden = navigator.onLine;
+        };
+
+        window.addEventListener('online', actualizar);
+        window.addEventListener('offline', actualizar);
+        actualizar();
+    };
+
+    const iniciarAnio = () => {
+        const anio = $('#anio');
+        if (anio) anio.textContent = String(new Date().getFullYear());
+    };
+
+    const iniciar = () => {
+        iniciarTema();
+        iniciarCarrito();
+        iniciarCarrusel();
+        iniciarPreguntas();
+        iniciarContacto();
+        iniciarConexion();
+        iniciarAnio();
+    };
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', iniciar);
+    } else {
+        iniciar();
+    }
 })();
