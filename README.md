@@ -20,7 +20,6 @@ Sitio de **Sabor del Norte**, marca de comida peruana por delivery en el centro 
 - **Horarios:** todos los días, de 12:00 a 15:30 y de 19:30 a 23:30.
 - **Envío:** $2.000, sin mínimo de pedido.
 - **Pagos:** efectivo, transferencia y Mercado Pago.
-- **WhatsApp:** +54 223 502 3826.
 
 ## Uso local
 
